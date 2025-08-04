@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home | SellHub{% endblock %}
+
+{% block content %}
+
+<section class="text-center px-6 py-20 bg-black" id="home">
+    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+        Find your dream <span class="text-pink-500">home</span> today
+    </h1>
+    <p class="text-lg text-zinc-400 max-w-3xl mx-auto">
+        At SellHub, we make it easy to discover beautiful houses, connect with trusted agents, and invest in your future. Explore premium listings in your city with <span class="text-pink-500 font-semibold">confidence</span>.
+    </p>
+</section>
+
+<section class="overflow-hidden relative w-full py-10 bg-black">
+    <div class="animate-scroll flex space-x-6 w-max">
+        {% for i in "123456789" %}
+        <div class="  hover:shadow-pink-500 relative min-w-[300px] max-w-xs h-[400px] rounded-xl overflow-hidden shadow-lg group">
+            <img src="{% static 'src/' %}{{ forloop.counter }}.jpg" class="w-full h-full object-cover">
+            <div class="absolute bottom-0 w-full bg-zinc-950/70 p-4">
+                <h3 class="text-lg font-semibold text-white">Modern House #{{ forloop.counter }}</h3>
+                <p class="text-sm text-white">3 Beds · 2 Baths · <span class="text-pink-500">Sea View</span></p>
+                <a href="#" class="mt-2 inline-block text-pink-500 hover:underline text-sm">View Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<!-- About Section -->
+<section class="bg-zinc-950 text-white py-16 px-6">
+  <div class="max-w-5xl mx-auto text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-6">
+      About <span class="text-pink-500">SellHub</span>
+    </h2>
+    <p class="text-zinc-300 text-lg mb-8">
+      SellHub is a modern real estate platform that connects buyers and sellers across the country. 
+      Whether you're looking for a cozy apartment, a luxurious villa, or a perfect investment property, 
+      we've got you covered. Our goal is to simplify the process and bring trust, speed, and clarity to every transaction.
+    </p>
+    <div class="flex flex-col md:flex-row items-center justify-center gap-8 mt-10 ">
+      <div class="bg-zinc-900 p-6 rounded-xl shadow-md max-w-sm hover:shadow-pink-600 ">
+        <h3 class="text-xl font-semibold mb-2 text-pink-500">Verified Listings</h3>
+        <p class="text-zinc-400 text-sm">
+          Every property is checked and validated to ensure transparency and reliability.
+        </p>
+      </div>
+      <div class="bg-zinc-900 p-6 rounded-xl shadow-md max-w-sm  hover:shadow-pink-600">
+        <h3 class="text-xl font-semibold mb-2 text-pink-500">Trusted Agents</h3>
+        <p class="text-zinc-400 text-sm">
+          Work with experienced professionals who know the market and value your time.
+        </p>
+      </div>
+      <div class="bg-zinc-900 p-6 rounded-xl shadow-md max-w-sm  hover:shadow-pink-600 ">
+        <h3 class="text-xl font-semibold mb-2 text-pink-500">Smart Search</h3>
+        <p class="text-zinc-400 text-sm">
+          Quickly find properties that match your style, budget, and preferred location.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="bg-black text-white py-20 px-6">
+  <div class="max-w-6xl mx-auto text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-12">
+      What our <span class="text-pink-500">clients</span> say
+    </h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      
+      <!-- Testimonial 1 -->
+      <div class="bg-zinc-900 p-6 rounded-2xl shadow-lg flex flex-col  items-center text-center hover:shadow-pink-500">
+        <img src="{% static 'src/10.jpg' %}" alt="User 1"
+             class="w-20 h-20 rounded-full object-cover mb-4 border-2 border-pink-500">
+        <p class="text-zinc-300 italic mb-4">
+          “SellHub helped me find the perfect house in just 3 days. Great service and very professional team!”
+        </p>
+        <h4 class="text-pink-500 font-semibold">Sarah Johnson</h4>
+        <span class="text-sm text-zinc-400">New York, USA</span>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="bg-zinc-900 p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:shadow-pink-600">
+        <img src="{% static 'src/11.jpg' %}" alt="User 2"
+             class="w-20 h-20 rounded-full object-cover mb-4 border-2 border-pink-500">
+        <p class="text-zinc-300 italic mb-4">
+          “Very smooth experience. I sold my apartment within a week. Highly recommended!”
+        </p>
+        <h4 class="text-pink-500 font-semibold">David Lee</h4>
+        <span class="text-sm text-zinc-400">Toronto, Canada</span>
+      </div>
+
+      <!-- Testimonial 3 -->
+      <div class="bg-zinc-900 p-6 rounded-2xl shadow-lg flex flex-col items-center text-center hover:shadow-pink-600">
+        <img src="{% static 'src/12.jpg' %}" alt="User 3"
+             class="w-20 h-20 rounded-full object-cover mb-4 border-2 border-pink-500">
+        <p class="text-zinc-300 italic mb-4">
+          “Easy to use, beautiful interface and amazing support. I’ll definitely use SellHub again.”
+        </p>
+        <h4 class="text-pink-500 font-semibold">Amina Diallo</h4>
+        <span class="text-sm text-zinc-400">Dakar, Senegal</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-20 bg-zinc-950 text-white relative overflow-hidden px-6">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10">
+    
+    <!-- Texte des services -->
+    <div class="md:w-1/2 z-10">
+      <h2 class="text-4xl font-bold text-pink-500 mb-6">Our Services</h2>
+      <ul class="space-y-5 text-lg text-zinc-300">
+        <li class="flex items-start gap-3">
+          <span class="text-pink-500 text-xl">🏘️</span> Property listing & search filtering
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-pink-500 text-xl">📞</span> Direct communication with verified agents
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-pink-500 text-xl">📄</span> Legal and financial consulting
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-pink-500 text-xl">🚚</span> Relocation & after-sale assistance
+        </li>
+      </ul>
+    </div>
+
+    <!-- Image slider automatique -->
+    <div class="md:w-1/2 w-full relative h-72 overflow-hidden rounded-xl shadow-xl">
+      <div class="absolute inset-0 w-[300%] flex animate-slideX">
+        <img src="{% static 'src/1.jpg' %}" alt="Service 1" class="w-1/3 h-full object-cover" />
+        <img src="{% static 'src/2.jpg' %}" alt="Service 2" class="w-1/3 h-full object-cover" />
+        <img src="{% static 'src/3.jpg' %}" alt="Service 3" class="w-1/3 h-full object-cover" />
+        <img src="{% static 'src/4.jpg' %}" alt="Service 3" class="w-1/3 h-full object-cover" />
+      </div>
+    </div>
+
+  </div>
+</section>
+<section id="contact" class="bg-zinc-950 text-white py-24 px-6">
+  <div class="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    
+    <!-- 📸 Image à gauche -->
+    <div class="w-full h-full  ">
+      <img src="{% static 'src/10.jpg' %}" alt="Contact Image "
+        class="rounded-2xl shadow-2xl w-full h-[550px] object-cover object-center border-none">
+        <div class="absolute  inset-0 bg-gradient-to-t from-black to-transparent "></div>
+    </div>
+
+    <!-- 📝 Formulaire à droite -->
+    <div class="w-full">
+      <h2 class="text-4xl font-bold mb-4">Get in Touch</h2>
+      <p class="text-zinc-400 mb-8">We’d love to hear from you. Fill out the form and we'll get back to you as soon as possible.</p>
+
+      <form method="post" class="space-y-6">
+
+        <!-- Nom -->
+        <div class="relative">
+          <i class="fa-solid fa-user absolute left-4 top-3.5 text-pink-500"></i>
+          <input type="text" name="full_name" placeholder="Full Name"
+            class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500">
+        </div>
+
+        <!-- Email -->
+        <div class="relative">
+          <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-pink-500"></i>
+          <input type="email" name="email" placeholder="Email Address"
+            class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500">
+        </div>
+
+        <!-- Téléphone -->
+        <div class="relative">
+          <i class="fa-solid fa-phone absolute left-4 top-3.5 text-pink-500"></i>
+          <input type="tel" name="phone" placeholder="Phone Number"
+            class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500">
+        </div>
+
+        <!-- Sujet -->
+        <div class="relative">
+          <i class="fa-solid fa-pen-to-square absolute left-4 top-3.5 text-pink-500"></i>
+          <input type="text" name="subject" placeholder="Subject"
+            class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500">
+        </div>
+
+        <!-- Message -->
+        <div class="relative">
+          <i class="fa-solid fa-message absolute left-4 top-4 text-pink-500"></i>
+          <textarea name="message" rows="5" placeholder="Your Message"
+            class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"></textarea>
+        </div>
+
+        <!-- Bouton -->
+        <button type="submit"
+          class="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded-lg shadow-lg transition-colors duration-300">
+          Send Message
+        </button>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Animation Tailwind CSS only -->
+<style>
+@keyframes scrollLoop {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-scroll {
+  animation: scrollLoop 80s linear infinite;
+}
+@keyframes slideX {
+  0% { transform: translateX(0); }
+  33% { transform: translateX(-33.333%); }
+  66% { transform: translateX(-66.666%); }
+  100% { transform: translateX(0); }
+}
+.animate-slideX {
+  animation: slideX 25s ease-in infinite;
+}
+
+</style>
+
+
+{% endblock %}

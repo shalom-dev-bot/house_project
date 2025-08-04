@@ -1,0 +1,12 @@
+# Environnement virtuel Python
+env/
+
+# node_modules
+node_modules/
+
+# __pycache__ et fichiers compilés
+__pycache__/
+*.pyc
+
+# Fichiers système
+.DS_Store

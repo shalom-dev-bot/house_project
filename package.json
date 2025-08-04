@@ -1,0 +1,12 @@
+{
+  "name": "sellhub-tailwind",
+  "version": "1.0.0",
+  "description": "Tailwind CLI with Django",
+  "scripts": {
+    "watch": "npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.11",
+    "@tailwindcss/cli": "^4.1.11"
+  }
+}
