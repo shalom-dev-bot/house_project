@@ -4,15 +4,81 @@
 {% block title %}Home | SellHub{% endblock %}
 
 {% block content %}
-
-<section class="text-center px-6 py-20 bg-black" id="home">
-    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+<section class="bg-black text-white py-20 px-6" id="home">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+    
+    <!-- LEFT: Message + Button -->
+    <div class="md:w-1/2 space-y-6 text-left">
+      <h1 class="text-4xl md:text-5xl font-bold">
         Find your dream <span class="text-pink-500">home</span> today
-    </h1>
-    <p class="text-lg text-zinc-400 max-w-3xl mx-auto">
-        At SellHub, we make it easy to discover beautiful houses, connect with trusted agents, and invest in your future. Explore premium listings in your city with <span class="text-pink-500 font-semibold">confidence</span>.
-    </p>
+      </h1>
+      <p class="text-lg text-zinc-400">
+        Welcome to <span class="text-pink-500 font-semibold">SellHub</span> – the easiest way to find your dream house.
+        Browse exclusive listings, meet trusted agents, and invest smartly in your future.
+      </p>
+      <a href="#listings" class="inline-block bg-pink-500 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-pink-600 transition">
+        Explore Listings
+      </a>
+    </div>
+
+    <!-- RIGHT: Carousel + Controls -->
+    <div class="md:w-1/2 relative">
+      <div class="overflow-hidden rounded-2xl shadow-lg w-full h-64 md:h-80 relative">
+        <img id="carousel-image" src="{% static 'src/10.jpg' %}" alt="House" class="object-cover w-full h-full transition duration-700 ease-in-out rounded-2xl">
+      </div>
+
+      <!-- Navigation dots -->
+      <div class="mt-4 flex justify-center space-x-3">
+        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-70 hover:opacity-100" onclick="showImage(0)"></button>
+        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(1)"></button>
+        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(2)"></button>
+      </div>
+    </div>
+
+  </div>
 </section>
+
+<!-- JS Logic -->
+<script>
+  const images = [
+    "{% static 'src/10.jpg' %}",
+    "{% static 'src/2.jpg' %}",
+    "{% static 'src/11.jpg' %}"
+  ];
+
+  let index = 0;
+  const imageElement = document.getElementById('carousel-image');
+  const dots = document.querySelectorAll("button[onclick^='showImage']");
+
+  function updateDots(activeIndex) {
+    dots.forEach((dot, i) => {
+      dot.classList.remove('opacity-70');
+      dot.classList.add('opacity-20');
+      if (i === activeIndex) {
+        dot.classList.remove('opacity-20');
+        dot.classList.add('opacity-70');
+      }
+    });
+  }
+
+  function showImage(i) {
+    index = i;
+    imageElement.src = images[index];
+    updateDots(index);
+  }
+
+  function rotateImages() {
+    index = (index + 1) % images.length;
+    showImage(index);
+  }
+
+  // Auto rotate every 4 seconds
+  setInterval(rotateImages, 5000);
+
+  // Initialize
+  showImage(0);
+</script>
+
 
 <section class="overflow-hidden relative w-full py-10 bg-black">
     <div class="animate-scroll flex space-x-6 w-max">
@@ -142,6 +208,7 @@
 
   </div>
 </section>
+
 <section id="contact" class="bg-zinc-950 text-white py-24 px-6">
   <div class="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
     
