@@ -22,4 +22,6 @@ urlpatterns = [
      path('', include('housesell.urls')),
     path('accounts/', include('allauth.urls')),  # Allauth
     path('', include('accounts.urls')),  # index.html
+    path('forum/', include('forum.urls')),
+
 ]

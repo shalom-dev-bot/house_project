@@ -21,7 +21,8 @@
              <a href="#home" class=" hover:text-pink-600">home</a>
             <a href="#" class=" hover:text-pink-600">about/a>
             <a href="#" class=" hover:text-pink-600">tesmony</a>
-            <a href="#" class=" hover:text-pink-600">forum</a>
+            <a href="{% url 'forum_home' %}" class="hover:text-pink-600">Forum</a>
+
            {% if user.is_authenticated %}
   <a href="{% url 'account_logout' %}" class="text-pink-500 hover:underline">Logout</a>
 {% else %}
@@ -85,19 +86,19 @@
 <div>
   <h3 class="text-lg font-semibold mb-3 text-pink-500">Follow us</h3>
   <div class="flex space-x-4 text-xl">
-    <a href="https://www.facebook.com" target="_blank" class="transition hover:text-[#1877F2]">
+    <a href="https://www.facebook.com" target="_blank" class="transition text-[#1877F2]">
       <i class="fab fa-facebook-f"></i>
     </a>
-    <a href="https://www.twitter.com" target="_blank" class="transition hover:text-[#1DA1F2]">
+    <a href="https://www.twitter.com" target="_blank" class="transition text-[#1DA1F2]">
       <i class="fab fa-twitter"></i>
     </a>
-    <a href="https://www.instagram.com" target="_blank" class="transition hover:text-[#E4405F]">
+    <a href="https://www.instagram.com" target="_blank" class="transition text-[#E4405F]">
       <i class="fab fa-instagram"></i>
     </a>
-    <a href="https://www.linkedin.com" target="_blank" class="transition hover:text-[#0A66C2]">
+    <a href="https://www.linkedin.com" target="_blank" class="transition text-[#0A66C2]">
       <i class="fab fa-linkedin-in"></i>
     </a>
-    <a href="https://www.whatsapp.com" target="_blank" class="transition hover:text-[#25D366]">
+    <a href="https://www.whatsapp.com" target="_blank" class="transition text-[#25D366]">
       <i class="fab fa-whatsapp"></i>
     </a>
   </div>

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-20 text-white">
+    <h1 class="text-3xl font-bold text-pink-500 mb-6">Forum</h1>
+    {% for post in posts %}
+    <div class="bg-zinc-900 p-4 rounded mb-4 shadow">
+        <h2 class="text-xl font-bold">
+            <a href="{% url 'post_detail' post.pk %}" class="text-pink-500 hover:underline">{{ post.title }}</a>
+           <a href="{% url 'create_post' %}" class="bg-pink-500 px-4 py-2 rounded mb-4 inline-block">+ New Post</a>
+        </h2>
+        <p class="text-sm text-gray-400">Posted by {{ post.author }} on {{ post.created_at }}</p>
+        
+        <p>{{ post.content|truncatewords:20 }}</p>
+    </div>
+    {% empty %}
+    <p>No posts yet.</p>
+    {% endfor %}
+</section>
+{% endblock %}
+
