@@ -49,6 +49,7 @@ INSTALLED_APPS = [
       'forum',
 
 
+
     # Ton app d'auth perso
     
 ]

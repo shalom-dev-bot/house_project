@@ -25,6 +25,11 @@
     <div class="md:w-1/2 relative">
       <div class="overflow-hidden rounded-2xl shadow-lg w-full h-64 md:h-80 relative">
         <img id="carousel-image" src="{% static 'src/10.jpg' %}" alt="House" class="object-cover w-full h-full transition duration-700 ease-in-out rounded-2xl">
+        
+        <!-- Caption Overlay -->
+        <div id="carousel-caption" class="absolute bottom-0 left-0 w-full bg-gradient-to-t bg-zinc-950 from-55% transparent bg-opacity-50 text-white text-sm md:text-base px-4 py-3 rounded-b-2xl">
+          Spacious modern villa with a beautiful garden.
+        </div>
       </div>
 
       <!-- Navigation dots -->
@@ -32,6 +37,9 @@
         <button class="w-4 h-4 rounded-full bg-pink-500 opacity-70 hover:opacity-100" onclick="showImage(0)"></button>
         <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(1)"></button>
         <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(2)"></button>
+        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(3)"></button>
+        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(4)"></button>
+        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(5)"></button>
       </div>
     </div>
 
@@ -43,11 +51,24 @@
   const images = [
     "{% static 'src/10.jpg' %}",
     "{% static 'src/2.jpg' %}",
-    "{% static 'src/11.jpg' %}"
+    "{% static 'src/11.jpg' %}",
+    "{% static 'src/12.jpg' %}",
+    "{% static 'src/7.jpg' %}",
+    "{% static 'src/9.jpg' %}"
+  ];
+
+  const captions = [
+    "Spacious modern villa with a beautiful garden.",
+    "Cozy family house near the city center.",
+    "Luxury apartment with skyline views.",
+    "Luxury apartment with skyline views.",
+    "Luxury apartment with skyline views.",
+    "Luxury apartment with skyline views.",
   ];
 
   let index = 0;
   const imageElement = document.getElementById('carousel-image');
+  const captionElement = document.getElementById('carousel-caption');
   const dots = document.querySelectorAll("button[onclick^='showImage']");
 
   function updateDots(activeIndex) {
@@ -64,6 +85,7 @@
   function showImage(i) {
     index = i;
     imageElement.src = images[index];
+    captionElement.textContent = captions[index];
     updateDots(index);
   }
 
@@ -72,8 +94,8 @@
     showImage(index);
   }
 
-  // Auto rotate every 4 seconds
-  setInterval(rotateImages, 5000);
+  // Auto rotate every 5 seconds
+  setInterval(rotateImages, 10000);
 
   // Initialize
   showImage(0);

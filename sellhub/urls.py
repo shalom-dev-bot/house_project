@@ -23,5 +23,4 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),  # Allauth
     path('', include('accounts.urls')),  # index.html
     path('forum/', include('forum.urls')),
-
 ]
