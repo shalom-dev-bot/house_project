@@ -119,27 +119,13 @@
   startCarousel();
 </script>
 
-<section
-  class="relative w-full py-6 sm:py-10 bg-black overflow-x-auto scroll-pl-6"
-  aria-label="Scrolling list of modern houses"
->
-  <div
-    class="flex space-x-4 sm:space-x-6 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-pink-500 scrollbar-track-zinc-900"
-    id="house-carousel"
-  >
+
+<section class="overflow-hidden relative w-full py-6 sm:py-10 bg-black">
+  <div class="animate-scroll flex space-x-4 sm:space-x-6 w-max">
     {% for i in "123456789" %}
-    <div
-      class="relative min-w-[180px] sm:min-w-[250px] md:min-w-[300px] max-w-xs h-[250px] sm:h-[350px] md:h-[400px] rounded-xl overflow-hidden shadow-lg group hover:shadow-pink-500 transition-shadow duration-300 snap-start flex-shrink-0"
-    >
-      <img
-        src="{% static 'src/' %}{{ forloop.counter }}.jpg"
-        alt="Modern House {{ forloop.counter }}"
-        class="w-full h-full object-cover"
-        loading="lazy"
-      />
-      <div
-        class="absolute bottom-0 w-full bg-zinc-950/70 px-2 py-2 sm:px-4 sm:py-3 text-white text-xs sm:text-sm"
-      >
+    <div class="relative min-w-[180px] sm:min-w-[250px] md:min-w-[300px] max-w-xs h-[250px] sm:h-[350px] md:h-[400px] rounded-xl overflow-hidden shadow-lg group hover:shadow-pink-500 transition-shadow duration-300">
+      <img src="{% static 'src/' %}{{ forloop.counter }}.jpg" class="w-full h-full object-cover" alt="House {{ forloop.counter }}">
+      <div class="absolute bottom-0 w-full bg-zinc-950/70 px-2 py-2 sm:px-4 sm:py-3 text-white text-xs sm:text-sm">
         <h3 class="font-semibold">Modern House #{{ forloop.counter }}</h3>
         <p>3 Beds · 2 Baths · <span class="text-pink-500">Sea View</span></p>
         <a href="#" class="mt-1 inline-block text-pink-500 hover:underline">View Details</a>
@@ -148,49 +134,6 @@
     {% endfor %}
   </div>
 </section>
-
-<script>
-  // Optionnel : auto scroll horizontal infini fluide
-  // (boucle en JS pour plus contrôle que CSS animation)
-  const carousel = document.getElementById('house-carousel');
-  let scrollAmount = 0;
-
-  function autoScroll() {
-    scrollAmount += 1;
-    if (scrollAmount >= carousel.scrollWidth / 2) {
-      scrollAmount = 0;
-    }
-    carousel.scrollLeft = scrollAmount;
-  }
-
-  let scrollInterval = setInterval(autoScroll, 30);
-
-  // Pause au survol pour UX
-  carousel.addEventListener('mouseenter', () => clearInterval(scrollInterval));
-  carousel.addEventListener('mouseleave', () => {
-    scrollInterval = setInterval(autoScroll, 30);
-  });
-</script>
-
-<style>
-  /* Scroll snapping pour un scroll fluide en manuel */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-  }
-  .scrollbar-thumb-pink-500::-webkit-scrollbar-thumb {
-    background-color: #db2777;
-    border-radius: 9999px;
-  }
-  .scrollbar-track-zinc-900::-webkit-scrollbar-track {
-    background-color: #18181b;
-  }
-  /* cache la scrollbar sur les appareils tactiles */
-  @media (hover: none) {
-    #house-carousel::-webkit-scrollbar {
-      display: none;
-    }
-  }
-</style>
 
 <!-- About Section -->
 <section class="bg-zinc-950 text-white py-16 px-4 sm:px-6">
@@ -430,7 +373,13 @@
 
 <!-- Animation Tailwind CSS only -->
 <style>
-
+@keyframes scrollLoop {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-scroll {
+  animation: scrollLoop 80s linear infinite;
+}
 @keyframes slideX {
   0% { transform: translateX(0); }
   33% { transform: translateX(-33.333%); }
