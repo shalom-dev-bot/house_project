@@ -9,7 +9,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {% for listing in houses %}
       <div class="bg-zinc-900 p-4 rounded-2xl shadow hover:shadow-lg transition">
-        <img src="{% static listing.image.url %}" alt="{{ listing.title }}" class="w-full h-48 object-cover rounded-xl mb-4">
+        <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="w-full h-48 object-cover rounded-xl mb-4">
         <h3 class="text-xl font-semibold text-white">{{ listing.title }}</h3>
         <p class="text-pink-500 font-bold">${{ listing.price }}</p>
         <p class="text-zinc-400 text-sm">{{ listing.address }}</p>
