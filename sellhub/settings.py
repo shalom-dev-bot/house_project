@@ -172,3 +172,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'shalomdev316@gmail.com'
 EMAIL_HOST_PASSWORD = 'iwbu yxhc kobc szib'
 DEFAULT_FROM_EMAIL = 'SellHub <tonemail@gmail.com>'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

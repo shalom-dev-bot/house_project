@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="bg-zinc-950 text-white py-20 px-6 min-h-screen">
+  <div class="max-w-7xl mx-auto space-y-10">
+    <h2 class="text-3xl md:text-4xl font-bold text-center text-pink-500">Available Listings</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for listing in houses %}
+      <div class="bg-zinc-900 p-4 rounded-2xl shadow hover:shadow-lg transition">
+        <img src="{% static listing.image.url %}" alt="{{ listing.title }}" class="w-full h-48 object-cover rounded-xl mb-4">
+        <h3 class="text-xl font-semibold text-white">{{ listing.title }}</h3>
+        <p class="text-pink-500 font-bold">${{ listing.price }}</p>
+        <p class="text-zinc-400 text-sm">{{ listing.address }}</p>
+        <p class="text-zinc-300 text-sm mt-2">{{ listing.description|truncatechars:80 }}</p>
+      </div>
+      {% empty %}
+      <p class="col-span-full text-center text-zinc-400">No listings available for now.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
