@@ -4,50 +4,47 @@
 {% block title %}Home | SellHub{% endblock %}
 
 {% block content %}
-<section class="bg-black text-white py-20 px-6" id="home">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+<section class="bg-black text-white py-16 px-3 sm:px-6" id="home">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 sm:gap-10">
     
-    <!-- LEFT: Message + Button -->
-    <div class="md:w-1/2 space-y-6 text-left">
-      <h1 class="text-4xl md:text-5xl font-bold">
+    <!-- LEFT -->
+    <div class="w-full md:w-1/2 space-y-4 sm:space-y-6 text-left">
+      <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight break-words">
         Find your dream <span class="text-pink-500">home</span> today
       </h1>
-      <p class="text-lg text-zinc-400">
+      <p class="text-sm sm:text-lg text-zinc-400">
         Welcome to <span class="text-pink-500 font-semibold">SellHub</span> – the easiest way to find your dream house.
         Browse exclusive listings, meet trusted agents, and invest smartly in your future.
       </p>
-   <a href="{% url 'listings' %}" class="inline-block bg-pink-500 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-pink-600 transition">
-  Explore Listings
-</a>
-
+      <a href="{% url 'listings' %}" class="inline-block bg-pink-500 text-white text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold shadow hover:bg-pink-600 transition">
+        Explore Listings
+      </a>
     </div>
 
-    <!-- RIGHT: Carousel + Controls -->
-    <div class="md:w-1/2 relative">
-      <div class="overflow-hidden rounded-2xl shadow-lg w-full h-64 md:h-80 relative">
-        <img id="carousel-image" src="{% static 'src/10.jpg' %}" alt="House" class="object-cover w-full h-full transition duration-700 ease-in-out rounded-2xl">
+    <!-- RIGHT -->
+    <div class="w-full md:w-1/2 relative">
+      <div class="overflow-hidden rounded-2xl shadow-lg w-full h-48 sm:h-64 md:h-80 relative">
+        <img id="carousel-image" src="{% static 'src/10.jpg' %}" alt="House"
+          class="object-cover w-full h-full transition duration-700 ease-in-out rounded-2xl min-w-0" />
         
         <!-- Caption Overlay -->
-        <div id="carousel-caption" class="absolute bottom-0 left-0 w-full bg-gradient-to-t bg-zinc-950 from-55% transparent bg-opacity-50 text-white text-sm md:text-base px-4 py-3 rounded-b-2xl">
+        <div id="carousel-caption"
+          class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-zinc-950/90 to-transparent text-white text-xs sm:text-sm md:text-base px-3 py-2 sm:px-4 sm:py-3 rounded-b-2xl overflow-hidden">
           Spacious modern villa with a beautiful garden.
         </div>
       </div>
 
-      <!-- Navigation dots -->
-      <div class="mt-4 flex justify-center space-x-3">
-        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-70 hover:opacity-100" onclick="showImage(0)"></button>
-        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(1)"></button>
-        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(2)"></button>
-        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(3)"></button>
-        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(4)"></button>
-        <button class="w-4 h-4 rounded-full bg-pink-500 opacity-50 hover:opacity-100" onclick="showImage(5)"></button>
+      <!-- Dots -->
+      <div class="mt-3 sm:mt-4 flex justify-center space-x-2 sm:space-x-3">
+        <!-- Dots will be dynamically rendered in JS -->
+        <div id="carousel-dots" class="flex gap-2"></div>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- JS Logic -->
+<!-- JS -->
 <script>
   const images = [
     "{% static 'src/10.jpg' %}",
@@ -62,15 +59,25 @@
     "Spacious modern villa with a beautiful garden.",
     "Cozy family house near the city center.",
     "Luxury apartment with skyline views.",
-    "Luxury apartment with skyline views.",
-    "Luxury apartment with skyline views.",
-    "Luxury apartment with skyline views.",
+    "Modern duplex with high-end finishes.",
+    "Elegant cottage with countryside charm.",
+    "Smart home with solar panels and pool."
   ];
 
   let index = 0;
   const imageElement = document.getElementById('carousel-image');
   const captionElement = document.getElementById('carousel-caption');
-  const dots = document.querySelectorAll("button[onclick^='showImage']");
+  const dotsContainer = document.getElementById('carousel-dots');
+
+  // Create dots dynamically
+  const dots = images.map((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = `w-3 h-3 rounded-full bg-pink-500 opacity-30 hover:opacity-80 transition`;
+    btn.setAttribute('aria-label', `Slide ${i + 1}`);
+    btn.onclick = () => showImage(i);
+    dotsContainer.appendChild(btn);
+    return btn;
+  });
 
   function updateDots(activeIndex) {
     dots.forEach((dot, i) => {
@@ -85,64 +92,147 @@
 
   function showImage(i) {
     index = i;
-    imageElement.src = images[index];
-    captionElement.textContent = captions[index];
-    updateDots(index);
+    imageElement.src = images[i];
+    captionElement.textContent = captions[i];
+    updateDots(i);
   }
 
-  function rotateImages() {
-    index = (index + 1) % images.length;
-    showImage(index);
+  let intervalId = null;
+  function startCarousel() {
+    intervalId = setInterval(() => {
+      index = (index + 1) % images.length;
+      showImage(index);
+    }, 10000);
   }
 
-  // Auto rotate every 5 seconds
-  setInterval(rotateImages, 10000);
+  function stopCarousel() {
+    clearInterval(intervalId);
+  }
 
-  // Initialize
+  // Pause carousel when tab is inactive
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stopCarousel() : startCarousel();
+  });
+
+  // Start
   showImage(0);
+  startCarousel();
 </script>
 
-
-<section class="overflow-hidden relative w-full py-10 bg-black">
-    <div class="animate-scroll flex space-x-6 w-max">
-        {% for i in "123456789" %}
-        <div class="  hover:shadow-pink-500 relative min-w-[300px] max-w-xs h-[400px] rounded-xl overflow-hidden shadow-lg group">
-            <img src="{% static 'src/' %}{{ forloop.counter }}.jpg" class="w-full h-full object-cover">
-            <div class="absolute bottom-0 w-full bg-zinc-950/70 p-4">
-                <h3 class="text-lg font-semibold text-white">Modern House #{{ forloop.counter }}</h3>
-                <p class="text-sm text-white">3 Beds · 2 Baths · <span class="text-pink-500">Sea View</span></p>
-                <a href="#" class="mt-2 inline-block text-pink-500 hover:underline text-sm">View Details</a>
-            </div>
-        </div>
-        {% endfor %}
+<section
+  class="relative w-full py-6 sm:py-10 bg-black overflow-x-auto scroll-pl-6"
+  aria-label="Scrolling list of modern houses"
+>
+  <div
+    class="flex space-x-4 sm:space-x-6 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-pink-500 scrollbar-track-zinc-900"
+    id="house-carousel"
+  >
+    {% for i in "123456789" %}
+    <div
+      class="relative min-w-[180px] sm:min-w-[250px] md:min-w-[300px] max-w-xs h-[250px] sm:h-[350px] md:h-[400px] rounded-xl overflow-hidden shadow-lg group hover:shadow-pink-500 transition-shadow duration-300 snap-start flex-shrink-0"
+    >
+      <img
+        src="{% static 'src/' %}{{ forloop.counter }}.jpg"
+        alt="Modern House {{ forloop.counter }}"
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+      <div
+        class="absolute bottom-0 w-full bg-zinc-950/70 px-2 py-2 sm:px-4 sm:py-3 text-white text-xs sm:text-sm"
+      >
+        <h3 class="font-semibold">Modern House #{{ forloop.counter }}</h3>
+        <p>3 Beds · 2 Baths · <span class="text-pink-500">Sea View</span></p>
+        <a href="#" class="mt-1 inline-block text-pink-500 hover:underline">View Details</a>
+      </div>
     </div>
+    {% endfor %}
+  </div>
 </section>
+
+<script>
+  // Optionnel : auto scroll horizontal infini fluide
+  // (boucle en JS pour plus contrôle que CSS animation)
+  const carousel = document.getElementById('house-carousel');
+  let scrollAmount = 0;
+
+  function autoScroll() {
+    scrollAmount += 1;
+    if (scrollAmount >= carousel.scrollWidth / 2) {
+      scrollAmount = 0;
+    }
+    carousel.scrollLeft = scrollAmount;
+  }
+
+  let scrollInterval = setInterval(autoScroll, 30);
+
+  // Pause au survol pour UX
+  carousel.addEventListener('mouseenter', () => clearInterval(scrollInterval));
+  carousel.addEventListener('mouseleave', () => {
+    scrollInterval = setInterval(autoScroll, 30);
+  });
+</script>
+
+<style>
+  /* Scroll snapping pour un scroll fluide en manuel */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  .scrollbar-thumb-pink-500::-webkit-scrollbar-thumb {
+    background-color: #db2777;
+    border-radius: 9999px;
+  }
+  .scrollbar-track-zinc-900::-webkit-scrollbar-track {
+    background-color: #18181b;
+  }
+  /* cache la scrollbar sur les appareils tactiles */
+  @media (hover: none) {
+    #house-carousel::-webkit-scrollbar {
+      display: none;
+    }
+  }
+</style>
+
 <!-- About Section -->
-<section class="bg-zinc-950 text-white py-16 px-6">
+<section class="bg-zinc-950 text-white py-16 px-4 sm:px-6">
   <div class="max-w-5xl mx-auto text-center">
-    <h2 class="text-3xl md:text-4xl font-bold mb-6">
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 leading-snug">
       About <span class="text-pink-500">SellHub</span>
     </h2>
-    <p class="text-zinc-300 text-lg mb-8">
+
+    <p class="text-zinc-300 text-sm sm:text-base md:text-lg mb-6 sm:mb-8 leading-relaxed">
       SellHub is a modern real estate platform that connects buyers and sellers across the country. 
       Whether you're looking for a cozy apartment, a luxurious villa, or a perfect investment property, 
       we've got you covered. Our goal is to simplify the process and bring trust, speed, and clarity to every transaction.
     </p>
-    <div class="flex flex-col md:flex-row items-center justify-center gap-8 mt-10 ">
-      <div class="bg-zinc-900 p-6 rounded-xl shadow-md max-w-sm hover:shadow-pink-600 ">
-        <h3 class="text-xl font-semibold mb-2 text-pink-500">Verified Listings</h3>
+
+    <!-- Texte complémentaire -->
+    <p class="text-zinc-400 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed mb-10">
+      Unlike traditional real estate platforms, SellHub combines technology with human expertise to offer a seamless experience.
+      Our mission is not just to list homes — it’s to help people make one of the most important decisions of their lives with confidence. 
+      That’s why we’re committed to transparency, verified listings, and truly personalized service.
+    </p>
+
+    <!-- Learn More Button -->
+    <a href="{% url 'about' %}" class="inline-block bg-pink-500 hover:bg-pink-600 text-white font-semibold px-5 py-3 rounded-full shadow transition">
+      Learn More About Us
+    </a>
+
+    <!-- Feature Boxes -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 mt-12">
+      <div class="bg-zinc-900 p-5 sm:p-6 rounded-xl shadow-md max-w-sm hover:shadow-pink-600 transition-shadow duration-300">
+        <h3 class="text-lg sm:text-xl font-semibold mb-2 text-pink-500">Verified Listings</h3>
         <p class="text-zinc-400 text-sm">
           Every property is checked and validated to ensure transparency and reliability.
         </p>
       </div>
-      <div class="bg-zinc-900 p-6 rounded-xl shadow-md max-w-sm  hover:shadow-pink-600">
-        <h3 class="text-xl font-semibold mb-2 text-pink-500">Trusted Agents</h3>
+      <div class="bg-zinc-900 p-5 sm:p-6 rounded-xl shadow-md max-w-sm hover:shadow-pink-600 transition-shadow duration-300">
+        <h3 class="text-lg sm:text-xl font-semibold mb-2 text-pink-500">Trusted Agents</h3>
         <p class="text-zinc-400 text-sm">
           Work with experienced professionals who know the market and value your time.
         </p>
       </div>
-      <div class="bg-zinc-900 p-6 rounded-xl shadow-md max-w-sm  hover:shadow-pink-600 ">
-        <h3 class="text-xl font-semibold mb-2 text-pink-500">Smart Search</h3>
+      <div class="bg-zinc-900 p-5 sm:p-6 rounded-xl shadow-md max-w-sm hover:shadow-pink-600 transition-shadow duration-300">
+        <h3 class="text-lg sm:text-xl font-semibold mb-2 text-pink-500">Smart Search</h3>
         <p class="text-zinc-400 text-sm">
           Quickly find properties that match your style, budget, and preferred location.
         </p>
@@ -241,71 +331,106 @@
         class="rounded-2xl shadow-2xl w-full h-[550px] object-cover object-center border-none">
         <div class="absolute  inset-0 bg-gradient-to-t from-black to-transparent  "></div>
     </div>
-
+  <div class="max-w-4xl mx-auto">
     <!-- 📝 Formulaire à droite -->
     <div class="w-full">
-      <h2 class="text-4xl font-bold mb-4">Get in Touch</h2>
-      <p class="text-zinc-400 mb-8">We’d love to hear from you. Fill out the form and we'll get back to you as soon as possible.</p>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-pink-500">Get in Touch</h2>
+      <p class="text-zinc-400 mb-8 text-sm sm:text-base">
+        We’d love to hear from you. Fill out the form and we'll get back to you as soon as possible.
+      </p>
 
-      <form method="post" class="space-y-6">
+      <!-- Message de confirmation -->
+      <div id="form-message" class="hidden mb-4 text-sm font-medium px-4 py-3 rounded-lg"></div>
+
+      <form id="contactForm" method="post" class="space-y-5 text-sm sm:text-base">
+        <!-- CSRF Token Django si besoin -->
+        {% csrf_token %}
 
         <!-- Nom -->
         <div class="relative">
-          <i class="fa-solid fa-user absolute left-4 top-3.5 text-pink-500"></i>
+          <i class="fa-solid fa-user absolute left-4 top-3.5 text-pink-500 text-sm sm:text-base"></i>
           <input type="text" name="full_name" placeholder="Full Name"
             class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500">
         </div>
 
         <!-- Email -->
         <div class="relative">
-          <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-pink-500"></i>
+          <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-pink-500 text-sm sm:text-base"></i>
           <input type="email" name="email" placeholder="Email Address"
             class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500">
         </div>
 
         <!-- Téléphone -->
         <div class="relative">
-          <i class="fa-solid fa-phone absolute left-4 top-3.5 text-pink-500"></i>
+          <i class="fa-solid fa-phone absolute left-4 top-3.5 text-pink-500 text-sm sm:text-base"></i>
           <input type="tel" name="phone" placeholder="Phone Number"
             class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500">
         </div>
 
         <!-- Sujet -->
         <div class="relative">
-          <i class="fa-solid fa-pen-to-square absolute left-4 top-3.5 text-pink-500"></i>
+          <i class="fa-solid fa-pen-to-square absolute left-4 top-3.5 text-pink-500 text-sm sm:text-base"></i>
           <input type="text" name="subject" placeholder="Subject"
             class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500">
         </div>
 
         <!-- Message -->
         <div class="relative">
-          <i class="fa-solid fa-message absolute left-4 top-4 text-pink-500"></i>
+          <i class="fa-solid fa-message absolute left-4 top-4 text-pink-500 text-sm sm:text-base"></i>
           <textarea name="message" rows="5" placeholder="Your Message"
             class="w-full pl-12 pr-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"></textarea>
         </div>
 
         <!-- Bouton -->
         <button type="submit"
-          class="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded-lg shadow-lg transition-colors duration-300">
+          class="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 rounded-lg shadow-lg transition-all duration-300">
           Send Message
         </button>
-
       </form>
     </div>
   </div>
+
+  <!-- Script JS -->
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const messageBox = document.getElementById('form-message');
+
+      // Données
+      const name = form.full_name.value.trim();
+      const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
+      const subject = form.subject.value.trim();
+      const message = form.message.value.trim();
+
+      if (!name || !email || !subject || !message) {
+        messageBox.textContent = "Please fill in all required fields.";
+        messageBox.className = "bg-red-600 text-white px-4 py-3 rounded-lg mb-4";
+        messageBox.classList.remove("hidden");
+        return;
+      }
+
+      // Simuler l'envoi (remplace ça plus tard avec AJAX ou Django)
+      form.reset();
+      messageBox.textContent = "✅ Your message has been sent successfully!";
+      messageBox.className = "bg-green-600 text-white px-4 py-3 rounded-lg mb-4";
+      messageBox.classList.remove("hidden");
+
+      // Masquer après 5 secondes
+      setTimeout(() => {
+        messageBox.classList.add("hidden");
+      }, 5000);
+    });
+  </script>
 </section>
 
 
 
 <!-- Animation Tailwind CSS only -->
 <style>
-@keyframes scrollLoop {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.animate-scroll {
-  animation: scrollLoop 80s linear infinite;
-}
+
 @keyframes slideX {
   0% { transform: translateX(0); }
   33% { transform: translateX(-33.333%); }
