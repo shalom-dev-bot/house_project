@@ -1,5 +1,9 @@
 from django.shortcuts import render
 from .models import Listing
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+
 def index(request):
     return render(request, 'index.html')
 
@@ -7,9 +11,6 @@ def index(request):
 def listings(request):
     houses = Listing.objects.filter(is_available=True).order_by('-created_at')
     return render(request, 'listings.html', {'houses': houses})
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 def login_view(request):
     if request.user.is_authenticated:

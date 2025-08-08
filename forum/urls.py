@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.forum_home, name='forum_home'),
     path('post/<int:pk>/', views.post_detail, name='post_detail'),
-    path('post/<int:pk>/edit/', views.edit_post, name='edit_post'),
-    path('post/create/', views.create_post, name='create_post'),
+    path('post/new/', views.post_create, name='post_create'),
+    path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
+    path('post/<int:pk>/delete/', views.post_delete, name='post_delete'),
 ]
