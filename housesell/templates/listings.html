@@ -14,6 +14,11 @@
         <p class="text-pink-500 font-bold">${{ listing.price }}</p>
         <p class="text-zinc-400 text-sm">{{ listing.address }}</p>
         <p class="text-zinc-300 text-sm mt-2">{{ listing.description|truncatechars:80 }}</p>
+        <!-- Lien WhatsApp -->
+        <a href="https://wa.me/237692912914" target="_blank" rel="noopener noreferrer" 
+           class="inline-block mt-4 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition">
+          Contact via WhatsApp
+        </a>
       </div>
       {% empty %}
       <p class="col-span-full text-center text-zinc-400">No listings available for now.</p>

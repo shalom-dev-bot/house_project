@@ -1,0 +1,6 @@
+<h1>{% if form.instance.pk %}Edit Post{% else %}New Post{% endif %}</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="bg-pink-500 px-4 py-2 rounded text-white">Save</button>
+</form>
