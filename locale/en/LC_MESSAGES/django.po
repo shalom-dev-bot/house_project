@@ -105,56 +105,64 @@ msgstr ""
 #: housesell/templates/base.html:107 housesell/templates/base.html:167
 #: housesell/templates/index.html:5 housesell/templates/listing_detail.html:13
 msgid "Accueil"
-msgstr ""
+msgstr "Home"
 
 #: forum/templates/forum/post_detail.html:70
 msgid "Partager"
-msgstr ""
+msgstr "Share"
 
 #: forum/templates/forum/post_detail.html:98
 msgid "Votre réponse"
-msgstr ""
+msgstr "Your Reply"
 
 #: forum/templates/forum/post_detail.html:102
 msgid "Minimum 5 caractères"
-msgstr ""
+msgstr "Minimum 5 characters"
 
 #: forum/templates/forum/post_detail.html:107
 #: forum/templates/forum/post_detail.html:166
 msgid "Répondre"
-msgstr ""
+msgstr "Reply"
 
 #: forum/templates/forum/post_detail.html:115
 msgid "Connectez-vous pour répondre à ce sujet"
-msgstr ""
+msgstr "Login to reply to this topic"
 
 #: forum/templates/forum/post_detail.html:136
 msgid "Auteur"
-msgstr ""
+msgstr "Author"
 
 #: forum/templates/forum/post_detail.html:174
 msgid "Aucune réponse pour le moment. Soyez le premier à répondre !"
-msgstr ""
+msgstr "No replies yet. Be the first to reply!"
 
 #: forum/templates/forum/post_detail.html:213
+msgid "0 caractères"
+msgstr "0 characters"
+
+#: forum/templates/forum/post_detail.html:228
 msgid "Votre réponse doit contenir au moins 5 caractères."
-msgstr ""
+msgstr "Your reply must contain at least 5 characters."
 
-#: forum/templates/forum/post_detail.html:220
+#: forum/templates/forum/post_detail.html:234
 msgid "Envoi..."
-msgstr ""
+msgstr "Sending..."
 
-#: forum/templates/forum/post_detail.html:250
+#: forum/templates/forum/post_detail.html:253
+msgid "Êtes-vous sûr de vouloir supprimer ce sujet ?"
+msgstr "Are you sure you want to delete this topic?"
+
+#: forum/templates/forum/post_detail.html:268
 msgid "Lien copié dans le presse-papiers !"
-msgstr ""
+msgstr "Link copied to clipboard!"
 
-#: forum/templates/forum/post_detail.html:279
+#: forum/templates/forum/post_detail.html:278
 msgid "Modifier votre réponse :"
-msgstr ""
+msgstr "Edit your reply:"
 
-#: forum/templates/forum/post_detail.html:287
+#: forum/templates/forum/post_detail.html:288
 msgid "Êtes-vous sûr de vouloir supprimer cette réponse ?"
-msgstr ""
+msgstr "Are you sure you want to delete this reply?"
 
 #: forum/templates/forum/post_form.html:7
 #: forum/templates/forum/post_form.html:20
@@ -380,49 +388,49 @@ msgstr ""
 msgid "Vous devez accepter les termes pour publier votre témoignage."
 msgstr ""
 
-#: housesell/templates/base.html:29 housesell/templates/base.html:103
+#: housesell/templates/base.html:25
 msgid "Rechercher..."
-msgstr ""
+msgstr "Search..."
 
-#: housesell/templates/base.html:36 housesell/templates/base.html:108
-#: housesell/templates/base.html:168 housesell/templates/listing_detail.html:15
+#: housesell/templates/base.html:32
+msgid "Accueil"
+msgstr "Home"
+
+#: housesell/templates/base.html:33
 msgid "Propriétés"
-msgstr ""
+msgstr "Properties"
 
-#: housesell/templates/base.html:37 housesell/templates/base.html:109
-#: housesell/templates/base.html:169
+#: housesell/templates/base.html:34
 msgid "À propos"
-msgstr ""
+msgstr "About"
 
-#: housesell/templates/base.html:38 housesell/templates/base.html:110
-#: housesell/templates/base.html:170 housesell/templates/profile.html:171
-#: housesell/templates/testimonials.html:5
-#: housesell/templates/testimonials.html:30
+#: housesell/templates/base.html:35
 msgid "Témoignages"
-msgstr ""
+msgstr "Testimonials"
 
-#: housesell/templates/base.html:53 housesell/templates/base.html:116
+#: housesell/templates/base.html:36
+msgid "Forum"
+msgstr "Forum"
+
+#: housesell/templates/base.html:44
 msgid "Mon Profil"
-msgstr ""
+msgstr "My Profile"
 
-#: housesell/templates/base.html:56 housesell/templates/base.html:119
-#: housesell/templates/profile.html:187
+#: housesell/templates/base.html:46
 msgid "Ajouter témoignage"
-msgstr ""
+msgstr "Add Testimonial"
 
-#: housesell/templates/base.html:60 housesell/templates/base.html:122
+#: housesell/templates/base.html:50
 msgid "Déconnexion"
-msgstr ""
+msgstr "Logout"
 
-#: housesell/templates/base.html:66 housesell/templates/base.html:127
-#: housesell/templates/login.html:5
+#: housesell/templates/base.html:54
 msgid "Connexion"
-msgstr ""
+msgstr "Login"
 
-#: housesell/templates/base.html:68 housesell/templates/base.html:129
-#: housesell/templates/signup.html:5
+#: housesell/templates/base.html:56
 msgid "Inscription"
-msgstr ""
+msgstr "Sign Up"
 
 #: housesell/templates/base.html:159
 msgid ""

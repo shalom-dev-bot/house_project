@@ -247,7 +247,10 @@
                             .replace(/hover:text-pink-500/g, 'hover:text-blue-600')
                             .replace(/hover:bg-pink-600/g, 'hover:bg-blue-700')
                             .replace(/focus:ring-pink-500/g, 'focus:ring-blue-600')
-                            .replace(/border-pink-500/g, 'border-blue-600');
+                            .replace(/border-pink-500/g, 'border-blue-600')
+                            .replace(/text-primary/g, 'text-blue-600')
+                            .replace(/bg-primary/g, 'bg-blue-600')
+                            .replace(/hover:bg-primary-hover/g, 'hover:bg-blue-700');
                     } else {
                         newClassName = newClassName
                             .replace(/text-blue-600/g, 'text-pink-500')
@@ -255,7 +258,10 @@
                             .replace(/hover:text-blue-600/g, 'hover:text-pink-500')
                             .replace(/hover:bg-blue-700/g, 'hover:bg-pink-600')
                             .replace(/focus:ring-blue-600/g, 'focus:ring-pink-500')
-                            .replace(/border-blue-600/g, 'border-pink-500');
+                            .replace(/border-blue-600/g, 'border-pink-500')
+                            .replace(/text-blue-600/g, 'text-primary')
+                            .replace(/bg-blue-600/g, 'bg-primary')
+                            .replace(/hover:bg-blue-700/g, 'hover:bg-primary-hover');
                     }
                     
                     if (newClassName !== element.className) {
