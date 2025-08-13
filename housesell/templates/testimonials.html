@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Témoignages' %} - SellHub{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-zinc-900 to-black py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- En-tête -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-white mb-4">{% trans 'Témoignages de nos clients' %}</h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                {% trans 'Découvrez ce que nos clients disent de leur expérience avec SellHub' %}
+            </p>
+            {% if user.is_authenticated %}
+            <div class="mt-6">
+                <a href="{% url 'add_testimonial' %}" 
+                   class="inline-flex items-center bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-lg transition-colors">
+                    <i class="fas fa-star mr-2"></i>{% trans 'Ajouter mon témoignage' %}
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Statistiques -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-zinc-800 rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold text-primary mb-2">{{ testimonials.paginator.count }}</div>
+                <div class="text-gray-400">{% trans 'Témoignages' %}</div>
+            </div>
+            <div class="bg-zinc-800 rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold text-primary mb-2">4.8</div>
+                <div class="text-gray-400">{% trans 'Note moyenne' %}</div>
+            </div>
+            <div class="bg-zinc-800 rounded-lg p-6 text-center">
+                <div class="text-3xl font-bold text-primary mb-2">98%</div>
+                <div class="text-gray-400">{% trans 'Clients satisfaits' %}</div>
+            </div>
+        </div>
+
+        <!-- Filtres -->
+        <div class="bg-zinc-800 rounded-lg p-6 mb-8">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <label class="text-gray-300">{% trans 'Trier par:' %}</label>
+                    <select id="sort-select" class="bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                        <option value="newest">{% trans 'Plus récents' %}</option>
+                        <option value="oldest">{% trans 'Plus anciens' %}</option>
+                        <option value="rating">{% trans 'Note la plus haute' %}</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <label class="text-gray-300">{% trans 'Note:' %}</label>
+                    <div class="flex space-x-2">
+                        {% for i in "12345" %}
+                        <button class="rating-filter p-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors" data-rating="{{ forloop.counter }}">
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Témoignages -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {% for testimonial in testimonials %}
+            <div class="testimonial-card bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-xl p-6 hover:bg-zinc-700 transition-all duration-300 border border-zinc-700 hover:border-pink-500 transform hover:-translate-y-1 shadow-lg hover:shadow-2xl" 
+                 data-rating="{{ testimonial.rating }}" data-date="{{ testimonial.created_at|date:'Y-m-d' }}">
+                <!-- En-tête du témoignage -->
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <img src="{{ testimonial.user.profile.avatar.url|default:'/static/src/default-avatar.jpg' }}" 
+                             alt="{{ testimonial.user.username }}" 
+                             class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h3 class="font-semibold text-white">{{ testimonial.user.get_full_name|default:testimonial.user.username }}</h3>
+                            <p class="text-sm text-gray-400">{{ testimonial.user.profile.location|default:"Localisation non spécifiée" }}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="flex text-yellow-400 mb-1">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= testimonial.rating %}
+                                    <i class="fas fa-star text-sm"></i>
+                                {% else %}
+                                    <i class="far fa-star text-sm"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <span class="text-xs text-gray-400">{{ testimonial.created_at|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+
+                <!-- Contenu du témoignage -->
+                <div class="mb-4">
+                    <p class="text-gray-300 leading-relaxed">{{ testimonial.content|truncatewords:30 }}</p>
+                    {% if testimonial.content|wordcount > 30 %}
+                    <button class="text-primary hover:underline text-sm mt-2" onclick="toggleTestimonial(this)">
+                        {% trans 'Lire plus' %}
+                    </button>
+                    <div class="hidden mt-2">
+                        <p class="text-gray-300 leading-relaxed">{{ testimonial.content }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Informations supplémentaires -->
+                {% if testimonial.user.profile.profession %}
+                <div class="border-t border-gray-700 pt-3">
+                    <p class="text-xs text-gray-400">
+                        <i class="fas fa-briefcase mr-1"></i>{{ testimonial.user.profile.profession }}
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <i class="fas fa-star text-6xl text-gray-600 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-400 mb-2">{% trans 'Aucun témoignage pour le moment' %}</h3>
+                <p class="text-gray-500">{% trans 'Soyez le premier à partager votre expérience !' %}</p>
+                {% if user.is_authenticated %}
+                <a href="{% url 'add_testimonial' %}" class="inline-block mt-4 bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg transition-colors">
+                    {% trans 'Ajouter un témoignage' %}
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if testimonials.has_other_pages %}
+        <div class="flex justify-center">
+            <nav class="flex items-center space-x-2">
+                {% if testimonials.has_previous %}
+                    <a href="?page={{ testimonials.previous_page_number }}" 
+                       class="px-3 py-2 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                {% endif %}
+
+                {% for num in testimonials.paginator.page_range %}
+                    {% if testimonials.number == num %}
+                        <span class="px-3 py-2 bg-primary text-white rounded-lg">{{ num }}</span>
+                    {% elif num > testimonials.number|add:'-3' and num < testimonials.number|add:'3' %}
+                        <a href="?page={{ num }}" 
+                           class="px-3 py-2 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors">
+                            {{ num }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if testimonials.has_next %}
+                    <a href="?page={{ testimonials.next_page_number }}" 
+                       class="px-3 py-2 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+
+        <!-- Call to action -->
+        {% if user.is_authenticated %}
+        <div class="mt-16 text-center">
+            <div class="bg-gradient-to-r from-primary to-purple-600 rounded-lg p-8">
+                <h2 class="text-2xl font-bold text-white mb-4">{% trans 'Partagez votre expérience' %}</h2>
+                <p class="text-gray-200 mb-6">{% trans 'Votre témoignage aide d\'autres personnes à faire confiance à SellHub' %}</p>
+                <a href="{% url 'add_testimonial' %}" 
+                   class="inline-flex items-center bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-star mr-2"></i>{% trans 'Écrire un témoignage' %}
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sortSelect = document.getElementById('sort-select');
+    const ratingFilters = document.querySelectorAll('.rating-filter');
+    const testimonialCards = document.querySelectorAll('.testimonial-card');
+
+    // Fonction pour trier les témoignages
+    function sortTestimonials() {
+        const sortBy = sortSelect.value;
+        const cards = Array.from(testimonialCards);
+        
+        cards.sort((a, b) => {
+            if (sortBy === 'newest') {
+                return new Date(b.dataset.date) - new Date(a.dataset.date);
+            } else if (sortBy === 'oldest') {
+                return new Date(a.dataset.date) - new Date(b.dataset.date);
+            } else if (sortBy === 'rating') {
+                return parseInt(b.dataset.rating) - parseInt(a.dataset.rating);
+            }
+        });
+
+        const container = cards[0].parentElement;
+        cards.forEach(card => container.appendChild(card));
+    }
+
+    // Fonction pour filtrer par note
+    function filterByRating(rating) {
+        testimonialCards.forEach(card => {
+            const cardRating = parseInt(card.dataset.rating);
+            if (rating === 0 || cardRating === rating) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Événements
+    sortSelect.addEventListener('change', sortTestimonials);
+
+    let activeRatingFilter = 0;
+    ratingFilters.forEach((filter, index) => {
+        filter.addEventListener('click', () => {
+            const rating = index + 1;
+            
+            // Toggle du filtre
+            if (activeRatingFilter === rating) {
+                activeRatingFilter = 0;
+                filter.classList.remove('bg-primary');
+                filter.classList.add('bg-gray-700');
+                filterByRating(0);
+            } else {
+                // Désactiver tous les filtres
+                ratingFilters.forEach(f => {
+                    f.classList.remove('bg-primary');
+                    f.classList.add('bg-gray-700');
+                });
+                
+                // Activer le filtre sélectionné
+                filter.classList.remove('bg-gray-700');
+                filter.classList.add('bg-primary');
+                activeRatingFilter = rating;
+                filterByRating(rating);
+            }
+        });
+    });
+});
+
+// Fonction pour afficher/masquer le contenu complet
+function toggleTestimonial(button) {
+    const hiddenContent = button.nextElementSibling;
+    const isHidden = hiddenContent.classList.contains('hidden');
+    
+    if (isHidden) {
+        hiddenContent.classList.remove('hidden');
+        button.textContent = '{% trans "Lire moins" %}';
+    } else {
+        hiddenContent.classList.add('hidden');
+        button.textContent = '{% trans "Lire plus" %}';
+    }
+}
+</script>
+
+<style>
+.testimonial-card {
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.rating-filter.active {
+    background-color: var(--primary-color);
+}
+</style>
+{% endblock %}

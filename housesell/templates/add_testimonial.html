@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Ajouter un témoignage' %} - SellHub{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-zinc-900 to-black py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- En-tête -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-white mb-4">{% trans 'Partagez votre expérience' %}</h1>
+            <p class="text-gray-400">
+                {% trans 'Votre témoignage aide d\'autres personnes à faire confiance à SellHub' %}
+            </p>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="bg-zinc-800 rounded-lg p-8">
+            <form method="post" id="testimonial-form">
+                {% csrf_token %}
+                
+                <!-- Note -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-3">
+                        {% trans 'Votre note' %} *
+                    </label>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex space-x-2" id="rating-stars">
+                            {% for i in "12345" %}
+                            <button type="button" class="star-btn text-3xl text-gray-400 hover:text-yellow-400 transition-colors" data-rating="{{ forloop.counter }}">
+                                <i class="far fa-star"></i>
+                            </button>
+                            {% endfor %}
+                        </div>
+                        <span class="text-gray-400" id="rating-text">{% trans 'Cliquez pour noter' %}</span>
+                    </div>
+                    <input type="hidden" name="rating" id="rating-input" value="5" required>
+                </div>
+
+                <!-- Contenu -->
+                <div class="mb-6">
+                    <label for="{{ form.content.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                        {% trans 'Votre témoignage' %} *
+                    </label>
+                    {{ form.content }}
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-xs text-gray-400">{% trans 'Minimum 10 caractères' %}</span>
+                        <span class="text-xs text-gray-400" id="char-count">0 caractères</span>
+                    </div>
+                    {% if form.content.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.content.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Informations supplémentaires -->
+                <div class="bg-zinc-700 rounded-lg p-4 mb-6">
+                    <h3 class="text-sm font-medium text-white mb-3">{% trans 'Informations optionnelles' %}</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">{% trans 'Type de propriété' %}</label>
+                            <select class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="">{% trans 'Sélectionner' %}</option>
+                                <option value="house">{% trans 'Maison' %}</option>
+                                <option value="apartment">{% trans 'Appartement' %}</option>
+                                <option value="villa">{% trans 'Villa' %}</option>
+                                <option value="land">{% trans 'Terrain' %}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">{% trans 'Durée d\'utilisation' %}</label>
+                            <select class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="">{% trans 'Sélectionner' %}</option>
+                                <option value="less_than_1">{% trans 'Moins d\'1 an' %}</option>
+                                <option value="1_to_3">{% trans '1 à 3 ans' %}</option>
+                                <option value="3_to_5">{% trans '3 à 5 ans' %}</option>
+                                <option value="more_than_5">{% trans 'Plus de 5 ans' %}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Termes -->
+                <div class="mb-6">
+                    <div class="flex items-start">
+                        <input type="checkbox" id="terms" name="terms" required
+                               class="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-600 rounded bg-gray-700">
+                        <label for="terms" class="ml-3 text-sm text-gray-300">
+                            {% trans 'J\'accepte que mon témoignage soit publié sur le site et utilisé à des fins promotionnelles.' %}
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Boutons -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button type="submit" id="submit-btn"
+                            class="flex-1 bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane mr-2"></i>{% trans 'Publier mon témoignage' %}
+                    </button>
+                    <a href="{% url 'testimonials' %}" 
+                       class="flex-1 bg-gray-600 hover:bg-gray-500 text-white px-6 py-3 rounded-lg font-medium text-center transition-colors">
+                        {% trans 'Annuler' %}
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Conseils -->
+        <div class="mt-8 bg-zinc-800 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">{% trans 'Conseils pour un bon témoignage' %}</h3>
+            <div class="space-y-3 text-sm text-gray-300">
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                    <span>{% trans 'Soyez spécifique sur votre expérience avec SellHub' %}</span>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                    <span>{% trans 'Mentionnez les aspects que vous avez le plus appréciés' %}</span>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                    <span>{% trans 'Partagez comment SellHub vous a aidé dans votre recherche' %}</span>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                    <span>{% trans 'Soyez honnête et authentique dans votre avis' %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('testimonial-form');
+    const ratingStars = document.querySelectorAll('.star-btn');
+    const ratingInput = document.getElementById('rating-input');
+    const ratingText = document.getElementById('rating-text');
+    const contentTextarea = document.getElementById('{{ form.content.id_for_label }}');
+    const charCount = document.getElementById('char-count');
+    const submitBtn = document.getElementById('submit-btn');
+
+    let currentRating = 5;
+
+    // Gestion des étoiles
+    ratingStars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            const rating = index + 1;
+            currentRating = rating;
+            ratingInput.value = rating;
+            
+            // Mettre à jour l'affichage des étoiles
+            ratingStars.forEach((s, i) => {
+                const icon = s.querySelector('i');
+                if (i < rating) {
+                    icon.className = 'fas fa-star';
+                    s.classList.add('text-yellow-400');
+                    s.classList.remove('text-gray-400');
+                } else {
+                    icon.className = 'far fa-star';
+                    s.classList.remove('text-yellow-400');
+                    s.classList.add('text-gray-400');
+                }
+            });
+
+            // Mettre à jour le texte
+            const ratingTexts = {
+                1: '{% trans "Très décevant" %}',
+                2: '{% trans "Décevant" %}',
+                3: '{% trans "Moyen" %}',
+                4: '{% trans "Bien" %}',
+                5: '{% trans "Excellent" %}'
+            };
+            ratingText.textContent = ratingTexts[rating];
+        });
+
+        // Effet hover
+        star.addEventListener('mouseenter', () => {
+            const rating = index + 1;
+            ratingStars.forEach((s, i) => {
+                const icon = s.querySelector('i');
+                if (i < rating) {
+                    icon.className = 'fas fa-star';
+                    s.classList.add('text-yellow-400');
+                    s.classList.remove('text-gray-400');
+                }
+            });
+        });
+
+        star.addEventListener('mouseleave', () => {
+            ratingStars.forEach((s, i) => {
+                const icon = s.querySelector('i');
+                if (i < currentRating) {
+                    icon.className = 'fas fa-star';
+                    s.classList.add('text-yellow-400');
+                    s.classList.remove('text-gray-400');
+                } else {
+                    icon.className = 'far fa-star';
+                    s.classList.remove('text-yellow-400');
+                    s.classList.add('text-gray-400');
+                }
+            });
+        });
+    });
+
+    // Compteur de caractères
+    contentTextarea.addEventListener('input', function() {
+        const length = this.value.length;
+        charCount.textContent = `${length} caractères`;
+        
+        // Validation en temps réel
+        if (length < 10) {
+            charCount.classList.add('text-red-400');
+            charCount.classList.remove('text-gray-400');
+        } else {
+            charCount.classList.remove('text-red-400');
+            charCount.classList.add('text-gray-400');
+        }
+    });
+
+    // Validation du formulaire
+    form.addEventListener('submit', function(e) {
+        const content = contentTextarea.value.trim();
+        const terms = document.getElementById('terms').checked;
+
+        if (content.length < 10) {
+            e.preventDefault();
+            alert('{% trans "Votre témoignage doit contenir au moins 10 caractères." %}');
+            return;
+        }
+
+        if (!terms) {
+            e.preventDefault();
+            alert('{% trans "Vous devez accepter les termes pour publier votre témoignage." %}');
+            return;
+        }
+
+        // Désactiver le bouton pour éviter les soumissions multiples
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>{% trans "Publication..." %}';
+    });
+
+    // Initialiser l'affichage
+    ratingStars[4].click(); // Définir 5 étoiles par défaut
+});
+</script>
+
+<style>
+/* Styles pour les champs de formulaire */
+textarea {
+    @apply w-full px-3 py-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary resize-none;
+    min-height: 120px;
+}
+
+.star-btn {
+    transition: all 0.2s ease;
+}
+
+.star-btn:hover {
+    transform: scale(1.1);
+}
+</style>
+{% endblock %}
+

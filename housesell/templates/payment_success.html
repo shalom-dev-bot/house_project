@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Paiement réussi' %} - SellHub{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-zinc-900 to-black py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <!-- Icône de succès -->
+            <div class="mx-auto w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mb-8">
+                <i class="fas fa-check text-white text-4xl"></i>
+            </div>
+
+            <!-- Titre -->
+            <h1 class="text-3xl font-bold text-white mb-4">{% trans 'Paiement réussi !' %}</h1>
+            <p class="text-xl text-gray-400 mb-8">
+                {% trans 'Votre transaction a été traitée avec succès.' %}
+            </p>
+
+            <!-- Détails de la transaction -->
+            <div class="bg-zinc-800 rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold text-white mb-4">{% trans 'Détails de la transaction' %}</h2>
+                <div class="space-y-3 text-left">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">{% trans 'ID Transaction' %}</span>
+                        <span class="text-white font-mono">{{ payment.transaction_id }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">{% trans 'Propriété' %}</span>
+                        <span class="text-white">{{ payment.listing.title }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">{% trans 'Montant' %}</span>
+                        <span class="text-primary font-bold">{{ payment.amount }} FCFA</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">{% trans 'Méthode de paiement' %}</span>
+                        <span class="text-white">
+                            {% if payment.payment_method == 'om' %}
+                                Orange Money
+                            {% else %}
+                                MTN Mobile Money
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">{% trans 'Date' %}</span>
+                        <span class="text-white">{{ payment.created_at|date:"d/m/Y H:i" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informations supplémentaires -->
+            <div class="bg-blue-900 bg-opacity-20 border border-blue-500 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold text-blue-400 mb-3">{% trans 'Prochaines étapes' %}</h3>
+                <div class="space-y-2 text-left text-gray-300">
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-envelope text-blue-400 mt-1"></i>
+                        <span>{% trans 'Un email de confirmation vous a été envoyé avec tous les détails.' %}</span>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-phone text-blue-400 mt-1"></i>
+                        <span>{% trans 'Le propriétaire vous contactera dans les 24h pour finaliser la transaction.' %}</span>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-file-contract text-blue-400 mt-1"></i>
+                        <span>{% trans 'Les documents de vente seront préparés et signés.' %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="{% url 'listings' %}" 
+                   class="flex-1 bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-lg font-medium transition-colors text-center">
+                    <i class="fas fa-home mr-2"></i>{% trans 'Voir d\'autres propriétés' %}
+                </a>
+                <a href="{% url 'index' %}" 
+                   class="flex-1 bg-gray-600 hover:bg-gray-500 text-white px-6 py-3 rounded-lg font-medium transition-colors text-center">
+                    <i class="fas fa-arrow-left mr-2"></i>{% trans 'Retour à l\'accueil' %}
+                </a>
+            </div>
+
+            <!-- Support -->
+            <div class="mt-8 pt-8 border-t border-gray-700">
+                <p class="text-gray-400 mb-4">{% trans 'Besoin d\'aide ?' %}</p>
+                <div class="flex justify-center space-x-6">
+                    <a href="mailto:support@sellhub.com" class="text-primary hover:underline">
+                        <i class="fas fa-envelope mr-2"></i>{% trans 'Email' %}
+                    </a>
+                    <a href="tel:+237692912914" class="text-primary hover:underline">
+                        <i class="fas fa-phone mr-2"></i>{% trans 'Téléphone' %}
+                    </a>
+                    <a href="#" class="text-primary hover:underline">
+                        <i class="fas fa-comments mr-2"></i>{% trans 'Chat' %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Redirection automatique après 30 secondes
+setTimeout(() => {
+    window.location.href = "{% url 'listings' %}";
+}, 30000);
+
+// Afficher le temps restant
+let timeLeft = 30;
+const countdownElement = document.createElement('div');
+countdownElement.className = 'text-sm text-gray-400 mt-4';
+document.querySelector('.text-center').appendChild(countdownElement);
+
+const countdown = setInterval(() => {
+    timeLeft--;
+    countdownElement.textContent = `{% trans 'Redirection automatique dans' %} ${timeLeft} {% trans 'secondes' %}`;
+    
+    if (timeLeft <= 0) {
+        clearInterval(countdown);
+    }
+}, 1000);
+</script>
+{% endblock %}
+
