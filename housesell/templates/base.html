@@ -1,93 +1,183 @@
-{%load static %}
-{% load tz %} 
+{% load static %}
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SellHub{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'src/output.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-
 </head>
-<body class="bg-black text-white">
+<body class="bg-black text-white" id="body">
 
     <!-- Navbar -->
-  <nav class="bg-zinc-950 text-white px-6 py-4 shadow flex items-center justify-between">
-  <div class="text-2xl font-bold text-pink-500">SellHub</div>
+    <nav class="bg-zinc-950 text-white px-6 py-4 shadow-lg relative z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Logo -->
+            <div class="text-2xl font-bold text-pink-500">SellHub</div>
 
   <!-- Bouton hamburger (mobile) -->
-  <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
-    ☰
+            <button id="menu-toggle" class="md:hidden text-white focus:outline-none text-xl">
+                <i class="fas fa-bars"></i>
   </button>
 
-  <!-- Liens de navigation -->
-  <div id="menu" class="hidden md:flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6 mt-4 md:mt-0 w-full md:w-auto">
-    <input type="text" placeholder="Search..."
-           class="px-4 py-2 rounded bg-zinc-800 border border-zinc-700 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-pink-500">
+            <!-- Navigation desktop -->
+            <div class="hidden md:flex items-center space-x-6">
+                <!-- Barre de recherche -->
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="{% trans 'Rechercher...' %}"
+                           class="px-4 py-2 rounded-lg bg-zinc-800 border border-zinc-700 w-64 focus:outline-none focus:ring-2 focus:ring-pink-500 text-white">
+                    <div id="search-results" class="absolute top-full left-0 right-0 bg-zinc-800 rounded-lg mt-1 hidden z-50"></div>
+                </div>
 
-    <a href="#home" class="hover:text-pink-500">Home</a>
-    <a href="#about" class="hover:text-pink-500">About</a>
-    <a href="#" class="hover:text-pink-500">Testimony</a>
-    <a href="{% url 'forum_home' %}" class="hover:text-pink-500">Forum</a>
+                  <!-- Liens de navigation -->
+                <a href="{% url 'index' %}" class="hover:text-pink-500 transition-colors">{% trans 'Accueil' %}</a>
+                <a href="{% url 'listings' %}" class="hover:text-pink-500 transition-colors">{% trans 'Propriétés' %}</a>
+                <a href="{% url 'about' %}" class="hover:text-pink-500 transition-colors">{% trans 'À propos' %}</a>
+                <a href="{% url 'testimonials' %}" class="hover:text-pink-500 transition-colors">{% trans 'Témoignages' %}</a>
+                <a href="{% url 'forum_home' %}" class="hover:text-pink-500 transition-colors">{% trans 'Forum' %}</a>
 
-    {% if user.is_authenticated %}
-      <a href="{% url 'account_logout' %}" class="text-pink-500 hover:underline">Logout</a>
-    {% else %}
-      <a href="{% url 'account_login' %}" class="text-pink-500 hover:underline">Login</a>
-      <a href="{% url 'account_signup' %}" class="bg-pink-500 px-4 py-2 rounded hover:bg-pink-600">Sign Up</a>
-    {% endif %}
+                <!-- Menu utilisateur -->
+                {% if user.is_authenticated %}
+                    <div class="relative group">
+                        <button class="flex items-center space-x-2 hover:text-pink-500 transition-colors">
+                            <img src="{{ user.profile.avatar.url|default:'/static/src/default-avatar.jpg' }}" 
+                                 alt="{{ user.username }}" 
+                                 class="w-8 h-8 rounded-full object-cover">
+                            <span>{{ user.first_name|default:user.username }}</span>
+                            <i class="fas fa-chevron-down text-sm"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-zinc-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <a href="{% url 'profile' %}" class="block px-4 py-2 hover:bg-zinc-700 rounded-t-lg">
+                                <i class="fas fa-user mr-2"></i>{% trans 'Mon Profil' %}
+                            </a>
+                            <a href="{% url 'add_testimonial' %}" class="block px-4 py-2 hover:bg-zinc-700">
+                                <i class="fas fa-star mr-2"></i>{% trans 'Ajouter témoignage' %}
+                            </a>
+                            <hr class="border-zinc-700">
+                            <a href="{% url 'logout' %}" class="block px-4 py-2 hover:bg-zinc-700 rounded-b-lg text-red-400">
+                                <i class="fas fa-sign-out-alt mr-2"></i>{% trans 'Déconnexion' %}
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="flex items-center space-x-4">
+                        <a href="{% url 'login' %}" class="text-pink-500 hover:text-pink-400 transition-colors">{% trans 'Connexion' %}</a>
+                        <span class="text-gray-400">|</span>
+                        <a href="{% url 'signup' %}" class="bg-pink-500 px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors">{% trans 'Inscription' %}</a>
+                    </div>
+                {% endif %}
+
+                <!-- Sélecteur de langue -->
+                <div class="relative group">
+                    <button class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors flex items-center space-x-1">
+                        <i class="fas fa-globe text-pink-500"></i>
+                        <span class="text-sm text-gray-300">{{ LANGUAGE_CODE|upper }}</span>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-32 bg-zinc-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <form method="post" action="{% url 'set_language' %}" class="block">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" name="language" value="fr" class="block w-full text-left px-4 py-2 hover:bg-zinc-700 rounded-t-lg">
+                                🇫🇷 Français
+                            </button>
+                            <button type="submit" name="language" value="en" class="block w-full text-left px-4 py-2 hover:bg-zinc-700 rounded-b-lg">
+                                🇺🇸 English
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Bouton thème -->
+                <button id="theme-toggle" class="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors">
+                    <i class="fas fa-palette text-pink-500"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu mobile -->
+        <div id="mobile-menu" class="md:hidden absolute top-full left-0 right-0 bg-zinc-950 border-t border-zinc-800 hidden">
+            <div class="px-6 py-4 space-y-4">
+                <!-- Barre de recherche mobile -->
+                <input type="text" placeholder="{% trans 'Rechercher...' %}"
+                       class="w-full px-4 py-2 rounded-lg bg-zinc-800 border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-primary text-white">
+                
+                <!-- Liens mobile -->
+                <a href="{% url 'index' %}" class="block py-2 hover:text-pink-500 transition-colors">{% trans 'Accueil' %}</a>
+                <a href="{% url 'listings' %}" class="block py-2 hover:text-pink-500 transition-colors">{% trans 'Propriétés' %}</a>
+                <a href="{% url 'about' %}" class="block py-2 hover:text-pink-500 transition-colors">{% trans 'À propos' %}</a>
+                <a href="{% url 'testimonials' %}" class="block py-2 hover:text-pink-500 transition-colors">{% trans 'Témoignages' %}</a>
+                <a href="{% url 'forum_home' %}" class="block py-2 hover:text-pink-500 transition-colors">{% trans 'Forum' %}</a>
+
+                    {% if user.is_authenticated %}
+                    <hr class="border-zinc-700">
+                    <a href="{% url 'profile' %}" class="block py-2 hover:text-pink-500 transition-colors">
+                        <i class="fas fa-user mr-2"></i>{% trans 'Mon Profil' %}
+                    </a>
+                    <a href="{% url 'add_testimonial' %}" class="block py-2 hover:text-pink-500 transition-colors">
+                        <i class="fas fa-star mr-2"></i>{% trans 'Ajouter témoignage' %}
+                    </a>
+                    <a href="{% url 'logout' %}" class="block py-2 text-red-400 hover:text-red-300 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>{% trans 'Déconnexion' %}
+                    </a>
+                {% else %}
+                    <hr class="border-zinc-700">
+                    <div class="flex items-center justify-center space-x-4 py-2">
+                        <a href="{% url 'login' %}" class="text-pink-500 hover:text-pink-400 transition-colors">{% trans 'Connexion' %}</a>
+                        <span class="text-gray-400">|</span>
+                        <a href="{% url 'signup' %}" class="bg-pink-500 px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors">{% trans 'Inscription' %}</a>
+                    </div>
+                {% endif %}
+            </div>
   </div>
 </nav>
 
-<!-- Script pour toggle menu mobile -->
-<script>
-  const menuToggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('menu');
-  
-  menuToggle.addEventListener('click', () => {
-    menu.classList.toggle('hidden');
-  });
-</script>
-
     <!-- Main content -->
     <main class="min-h-screen">
-        {% block content %}
+        {% if messages %}
+            <div class="max-w-7xl mx-auto px-4 py-4">
+                {% for message in messages %}
+                    <div class="mb-4 p-4 rounded-lg {% if message.tags == 'success' %}bg-green-600 text-white{% elif message.tags == 'error' %}bg-red-600 text-white{% else %}bg-blue-600 text-white{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         
+        {% block content %}
         {% endblock %}
     </main>
 
     <!-- Footer -->
   <footer class="bg-zinc-700 text-white py-10">
   <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About -->
+            <div>
+                <h2 class="text-xl font-bold mb-4 text-pink-500">SellHub</h2>
+                <p class="text-sm leading-relaxed">
+                    {% trans 'Nous vous aidons à trouver votre maison de rêve avec facilité et sécurité. Explorez nos annonces pour découvrir la propriété parfaite.' %}
+                </p>
+            </div>
 
-    <!-- About -->
-    <div>
-      <h2 class="text-xl font-bold mb-4 text-pink-500">Immobi</h2>
-      <p class="text-sm leading-relaxed">
-        We help you find your dream home with ease and security. Explore our listings to discover the perfect property.
-      </p>
-    </div>
+            <!-- Links -->
+            <div>
+                <h3 class="text-lg font-semibold mb-3 text-pink-500">{% trans 'Liens' %}</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="{% url 'index' %}" class="hover:text-pink-500 transition">{% trans 'Accueil' %}</a></li>
+                    <li><a href="{% url 'listings' %}" class="hover:text-pink-500 transition">{% trans 'Propriétés' %}</a></li>
+                    <li><a href="{% url 'about' %}" class="hover:text-pink-500 transition">{% trans 'À propos' %}</a></li>
+                    <li><a href="{% url 'testimonials' %}" class="hover:text-pink-500 transition">{% trans 'Témoignages' %}</a></li>
+                </ul>
+            </div>
 
-    <!-- Links -->
-    <div>
-      <h3 class="text-lg font-semibold mb-3 text-pink-500">Links</h3>
+            <!-- Contact -->
+            <div>
+                <h3 class="text-lg font-semibold mb-3 text-pink-500">{% trans 'Contact' %}</h3>
       <ul class="space-y-2 text-sm">
-        <li><a href="#" class="hover:text-pink-500 transition">Home</a></li>
-        <li><a href="#" class="hover:text-pink-500 transition">About</a></li>
-        <li><a href="#"" class="hover:text-pink-500 transition">Services</a></li>
-        <li><a href="#" class="hover:text-pink-500 transition">Contact</a></li>
-      </ul>
-    </div>
-
-    <!-- Contact -->
-    <div>
-      <h3 class="text-lg font-semibold mb-3 text-pink-500">Contact</h3>
-      <ul class="space-y-2 text-sm">
-        <li class="flex items-center space-x-2">
+                <li class="flex items-center space-x-2">
           <i class="fas fa-map-marker-alt text-pink-500"></i>
-          <span>Yaoundé, Bafoussam Cameroon</span>
+          <span>Yaoundé, Bafoussam Cameroun</span>
         </li>
         <li class="flex items-center space-x-2">
           <i class="fas fa-envelope text-pink-500"></i>
@@ -100,34 +190,154 @@
       </ul>
     </div>
 
-    <!-- Social -->
-<div>
-  <h3 class="text-lg font-semibold mb-3 text-pink-500">Follow us</h3>
+                <!-- Social -->
+            <div>
+                <h3 class="text-lg font-semibold mb-3 text-pink-500">{% trans 'Suivez-nous' %}</h3>
   <div class="flex space-x-4 text-xl">
-    <a href="https://www.facebook.com" target="_blank" class="transition text-[#1877F2]">
+                    <a href="https://www.facebook.com" target="_blank" class="transition text-[#1877F2] hover:scale-110">
       <i class="fab fa-facebook-f"></i>
     </a>
-    <a href="https://www.twitter.com" target="_blank" class="transition text-[#1DA1F2]">
+                    <a href="https://www.twitter.com" target="_blank" class="transition text-[#1DA1F2] hover:scale-110">
       <i class="fab fa-twitter"></i>
     </a>
-    <a href="https://www.instagram.com" target="_blank" class="transition text-[#E4405F]">
+                    <a href="https://www.instagram.com" target="_blank" class="transition text-[#E4405F] hover:scale-110">
       <i class="fab fa-instagram"></i>
     </a>
-    <a href="https://www.linkedin.com" target="_blank" class="transition text-[#0A66C2]">
+                    <a href="https://www.linkedin.com" target="_blank" class="transition text-[#0A66C2] hover:scale-110">
       <i class="fab fa-linkedin-in"></i>
     </a>
-    <a href="https://www.whatsapp.com" target="_blank" class="transition text-[#25D366]">
+                    <a href="https://www.whatsapp.com" target="_blank" class="transition text-[#25D366] hover:scale-110">
       <i class="fab fa-whatsapp"></i>
     </a>
   </div>
 </div>
-
   </div>
 
   <div class="mt-10 border-t border-zinc-800 pt-6 text-center text-sm">
-    &copy; {% now "Y" %} Immobi. All rights reserved.
+            &copy; {% now "Y" %} SellHub. {% trans 'Tous droits réservés.' %}
   </div>
 </footer>
 
+    <!-- JavaScript -->
+    <script>
+        // Toggle menu mobile
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Toggle thème
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.getElementById('body');
+        
+        function updateTheme(isBlue) {
+            // Mettre à jour tous les éléments avec les couleurs pink-500/600 vers blue-600/700
+            const pinkElements = document.querySelectorAll('*');
+            
+            pinkElements.forEach(element => {
+                if (element.className) {
+                    let newClassName = element.className;
+                    
+                    if (isBlue) {
+                        newClassName = newClassName
+                            .replace(/text-pink-500/g, 'text-blue-600')
+                            .replace(/bg-pink-500/g, 'bg-blue-600')
+                            .replace(/hover:text-pink-500/g, 'hover:text-blue-600')
+                            .replace(/hover:bg-pink-600/g, 'hover:bg-blue-700')
+                            .replace(/focus:ring-pink-500/g, 'focus:ring-blue-600')
+                            .replace(/border-pink-500/g, 'border-blue-600');
+                    } else {
+                        newClassName = newClassName
+                            .replace(/text-blue-600/g, 'text-pink-500')
+                            .replace(/bg-blue-600/g, 'bg-pink-500')
+                            .replace(/hover:text-blue-600/g, 'hover:text-pink-500')
+                            .replace(/hover:bg-blue-700/g, 'hover:bg-pink-600')
+                            .replace(/focus:ring-blue-600/g, 'focus:ring-pink-500')
+                            .replace(/border-blue-600/g, 'border-pink-500');
+                    }
+                    
+                    if (newClassName !== element.className) {
+                        element.className = newClassName;
+                    }
+                }
+            });
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const isCurrentlyBlue = body.classList.contains('theme-blue');
+            if (isCurrentlyBlue) {
+                body.classList.remove('theme-blue');
+                body.classList.add('theme-pink');
+                updateTheme(false);
+                localStorage.setItem('theme', 'pink');
+            } else {
+                body.classList.remove('theme-pink');
+                body.classList.add('theme-blue');
+                updateTheme(true);
+                localStorage.setItem('theme', 'blue');
+            }
+        });
+
+        // Charger le thème sauvegardé
+        const savedTheme = localStorage.getItem('theme') || 'pink';
+        if (savedTheme === 'blue') {
+            body.classList.remove('theme-pink');
+            body.classList.add('theme-blue');
+            updateTheme(true);
+        } else {
+            body.classList.remove('theme-blue');
+            body.classList.add('theme-pink');
+            updateTheme(false);
+        }
+
+        // Recherche en temps réel
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            const query = searchInput.value.trim();
+            
+            if (query.length < 2) {
+                searchResults.classList.add('hidden');
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                fetch(`/search/?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.results.length > 0) {
+                            searchResults.innerHTML = data.results.map(result => `
+                                <a href="/listing/${result.id}/" class="block px-4 py-2 hover:bg-zinc-700 border-b border-zinc-700 last:border-b-0">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="${result.image_url}" alt="${result.title}" class="w-12 h-12 object-cover rounded">
+                                        <div>
+                                            <div class="font-medium">${result.title}</div>
+                                            <div class="text-sm text-gray-400">${result.address}</div>
+                                            <div class="text-sm text-pink-500">${result.price} FCFA</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            `).join('');
+                            searchResults.classList.remove('hidden');
+                        } else {
+                            searchResults.innerHTML = '<div class="px-4 py-2 text-gray-400">Aucun résultat trouvé</div>';
+                            searchResults.classList.remove('hidden');
+                        }
+                    });
+            }, 300);
+        });
+
+        // Masquer les résultats de recherche quand on clique ailleurs
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

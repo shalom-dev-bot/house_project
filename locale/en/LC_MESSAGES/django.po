@@ -1,0 +1,856 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-13 08:32+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: forum/templates/forum/forum_home.html:5
+#: forum/templates/forum/post_detail.html:15 housesell/templates/base.html:39
+#: housesell/templates/base.html:111 housesell/templates/profile.html:195
+msgid "Forum"
+msgstr "Forum"
+
+#: forum/templates/forum/forum_home.html:12
+msgid "Forum SellHub"
+msgstr "SellHub Forum"
+
+#: forum/templates/forum/forum_home.html:14
+msgid ""
+"Partagez vos expériences, posez vos questions et connectez-vous avec la "
+"communauté"
+msgstr "Share your experiences, ask questions and connect with the community"
+
+#: forum/templates/forum/forum_home.html:22
+msgid "Rechercher dans le forum..."
+msgstr "Search in forum..."
+
+#: forum/templates/forum/forum_home.html:31
+#: forum/templates/forum/post_form.html:9
+msgid "Nouveau sujet"
+msgstr "New Topic"
+
+#: forum/templates/forum/forum_home.html:36
+msgid "Se connecter pour poster"
+msgstr "Login to post"
+
+#: forum/templates/forum/forum_home.html:45
+msgid "Sujets"
+msgstr "Topics"
+
+#: forum/templates/forum/forum_home.html:62
+#: forum/templates/forum/post_detail.html:84
+msgid "Réponses"
+msgstr "Replies"
+
+#: forum/templates/forum/forum_home.html:68
+msgid "Membres actifs"
+msgstr "Active Members"
+
+#: forum/templates/forum/forum_home.html:87
+#: forum/templates/forum/post_detail.html:32
+msgid "Par"
+msgstr "By"
+
+#: forum/templates/forum/forum_home.html:91
+#: forum/templates/forum/post_detail.html:36
+msgid "réponses"
+msgstr "replies"
+
+#: forum/templates/forum/forum_home.html:103
+#: forum/templates/forum/post_detail.html:76
+msgid "vues"
+msgstr "views"
+
+#: forum/templates/forum/forum_home.html:107
+msgid "j"
+msgstr "likes"
+
+#: forum/templates/forum/forum_home.html:130
+msgid "Aucun sujet pour le moment"
+msgstr "No topics yet"
+
+#: forum/templates/forum/forum_home.html:131
+msgid "Soyez le premier à créer un sujet de discussion !"
+msgstr "Be the first to create a discussion topic!"
+
+#: forum/templates/forum/forum_home.html:135
+msgid "Créer le premier sujet"
+msgstr "Create the first topic"
+
+#: forum/templates/forum/forum_home.html:140
+#: forum/templates/forum/post_detail.html:118 housesell/templates/login.html:74
+#: housesell/templates/signup.html:168
+msgid "Se connecter"
+msgstr "Login"
+
+#: forum/templates/forum/forum_home.html:201
+#: forum/templates/forum/post_detail.html:255
+msgid "Êtes-vous sûr de vouloir supprimer ce sujet ?"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:13 housesell/templates/base.html:35
+#: housesell/templates/base.html:107 housesell/templates/base.html:167
+#: housesell/templates/index.html:5 housesell/templates/listing_detail.html:13
+msgid "Accueil"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:70
+msgid "Partager"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:98
+msgid "Votre réponse"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:102
+msgid "Minimum 5 caractères"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:107
+#: forum/templates/forum/post_detail.html:166
+msgid "Répondre"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:115
+msgid "Connectez-vous pour répondre à ce sujet"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:136
+msgid "Auteur"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:174
+msgid "Aucune réponse pour le moment. Soyez le premier à répondre !"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:213
+msgid "Votre réponse doit contenir au moins 5 caractères."
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:220
+msgid "Envoi..."
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:250
+msgid "Lien copié dans le presse-papiers !"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:279
+msgid "Modifier votre réponse :"
+msgstr ""
+
+#: forum/templates/forum/post_detail.html:287
+msgid "Êtes-vous sûr de vouloir supprimer cette réponse ?"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:7
+#: forum/templates/forum/post_form.html:20
+msgid "Modifier le sujet"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:22
+msgid "Créer un nouveau sujet"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:26
+msgid ""
+"Partagez vos expériences, posez vos questions et contribuez à la communauté"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:38
+#: forum/templates/forum/post_form.html:111
+#: forum/templates/forum/post_form.html:133
+msgid "Titre du sujet"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:42
+msgid "Un titre clair et descriptif"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:53
+msgid "Contenu"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:57
+msgid "Minimum 20 caractères"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:67
+msgid "Conseils pour un bon sujet"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:71
+msgid "Soyez clair et précis dans votre titre"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:75
+msgid "Détaillez votre question ou expérience"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:79
+msgid "Respectez les autres membres de la communauté"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:83
+msgid "Utilisez des paragraphes pour une meilleure lisibilité"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:94
+msgid "Mettre à jour"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:96
+msgid "Publier le sujet"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:101
+#: housesell/templates/add_testimonial.html:102
+msgid "Annuler"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:109
+msgid "Aperçu"
+msgstr ""
+
+#: forum/templates/forum/post_form.html:112
+#: forum/templates/forum/post_form.html:149
+msgid "Contenu du sujet..."
+msgstr ""
+
+#: forum/templates/forum/post_form.html:168
+msgid "Le titre doit contenir au moins 5 caractères."
+msgstr ""
+
+#: forum/templates/forum/post_form.html:175
+msgid "Le contenu doit contenir au moins 20 caractères."
+msgstr ""
+
+#: forum/templates/forum/post_form.html:182
+#: housesell/templates/add_testimonial.html:240
+msgid "Publication..."
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:5
+#: housesell/templates/testimonials.html:125
+msgid "Ajouter un témoignage"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:12
+#: housesell/templates/testimonials.html:168
+msgid "Partagez votre expérience"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:14
+#: housesell/templates/testimonials.html:169
+msgid "Votre témoignage aide d\\"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:26
+msgid "Votre note"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:36
+msgid "Cliquez pour noter"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:44
+msgid "Votre témoignage"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:48
+msgid "Minimum 10 caractères"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:58
+msgid "Informations optionnelles"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:61
+msgid "Type de propriété"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:63
+#: housesell/templates/add_testimonial.html:73
+msgid "Sélectionner"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:64
+msgid "Maison"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:65
+msgid "Appartement"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:66
+msgid "Villa"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:67
+msgid "Terrain"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:71
+msgid "Durée d\\"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:74
+msgid "Moins d\\"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:75
+msgid "1 à 3 ans"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:76
+msgid "3 à 5 ans"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:77
+msgid "Plus de 5 ans"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:89
+#: housesell/templates/signup.html:149
+msgid "J\\"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:98
+msgid "Publier mon témoignage"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:110
+msgid "Conseils pour un bon témoignage"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:114
+msgid "Soyez spécifique sur votre expérience avec SellHub"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:118
+msgid "Mentionnez les aspects que vous avez le plus appréciés"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:122
+msgid "Partagez comment SellHub vous a aidé dans votre recherche"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:126
+msgid "Soyez honnête et authentique dans votre avis"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:168
+msgid "Très décevant"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:169
+msgid "Décevant"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:170
+msgid "Moyen"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:171
+msgid "Bien"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:172
+msgid "Excellent"
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:228
+msgid "Votre témoignage doit contenir au moins 10 caractères."
+msgstr ""
+
+#: housesell/templates/add_testimonial.html:234
+msgid "Vous devez accepter les termes pour publier votre témoignage."
+msgstr ""
+
+#: housesell/templates/base.html:29 housesell/templates/base.html:103
+msgid "Rechercher..."
+msgstr ""
+
+#: housesell/templates/base.html:36 housesell/templates/base.html:108
+#: housesell/templates/base.html:168 housesell/templates/listing_detail.html:15
+msgid "Propriétés"
+msgstr ""
+
+#: housesell/templates/base.html:37 housesell/templates/base.html:109
+#: housesell/templates/base.html:169
+msgid "À propos"
+msgstr ""
+
+#: housesell/templates/base.html:38 housesell/templates/base.html:110
+#: housesell/templates/base.html:170 housesell/templates/profile.html:171
+#: housesell/templates/testimonials.html:5
+#: housesell/templates/testimonials.html:30
+msgid "Témoignages"
+msgstr ""
+
+#: housesell/templates/base.html:53 housesell/templates/base.html:116
+msgid "Mon Profil"
+msgstr ""
+
+#: housesell/templates/base.html:56 housesell/templates/base.html:119
+#: housesell/templates/profile.html:187
+msgid "Ajouter témoignage"
+msgstr ""
+
+#: housesell/templates/base.html:60 housesell/templates/base.html:122
+msgid "Déconnexion"
+msgstr ""
+
+#: housesell/templates/base.html:66 housesell/templates/base.html:127
+#: housesell/templates/login.html:5
+msgid "Connexion"
+msgstr ""
+
+#: housesell/templates/base.html:68 housesell/templates/base.html:129
+#: housesell/templates/signup.html:5
+msgid "Inscription"
+msgstr ""
+
+#: housesell/templates/base.html:159
+msgid ""
+"Nous vous aidons à trouver votre maison de rêve avec facilité et sécurité. "
+"Explorez nos annonces pour découvrir la propriété parfaite."
+msgstr ""
+
+#: housesell/templates/base.html:165
+msgid "Liens"
+msgstr ""
+
+#: housesell/templates/base.html:176
+msgid "Contact"
+msgstr ""
+
+#: housesell/templates/base.html:195
+msgid "Suivez-nous"
+msgstr ""
+
+#: housesell/templates/base.html:217
+msgid "Tous droits réservés."
+msgstr ""
+
+#: housesell/templates/listing_detail.html:39
+msgid "Acheter maintenant"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:44
+msgid "Contacter le propriétaire"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:49
+msgid "Ajouter aux favoris"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:56
+msgid "Informations rapides"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:59
+msgid "Type"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:63
+msgid "Chambres"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:67
+msgid "Salles de bain"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:71
+msgid "Surface"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:75
+msgid "Disponible"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:76
+msgid "Oui"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:76
+msgid "Non"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:84
+msgid "Propriétaire"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:107
+msgid "Description"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:113
+msgid "Caractéristiques"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:117
+msgid "chambres"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:121
+msgid "salles de bain"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:137
+msgid "Localisation"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:153
+msgid "Paiement"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:164
+#: housesell/templates/payment_success.html:39
+msgid "Méthode de paiement"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:200
+msgid "Montant total"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:207
+msgid "Payer maintenant"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:228
+msgid "Fonctionnalité de contact à implémenter"
+msgstr ""
+
+#: housesell/templates/listing_detail.html:233
+msgid "Ajouté aux favoris"
+msgstr ""
+
+#: housesell/templates/login.html:12
+msgid "Connexion à votre compte"
+msgstr ""
+
+#: housesell/templates/login.html:15
+msgid "Accédez à votre espace personnel SellHub"
+msgstr ""
+
+#: housesell/templates/login.html:26 housesell/templates/signup.html:26
+msgid "Nom d\\"
+msgstr ""
+
+#: housesell/templates/login.html:37 housesell/templates/signup.html:114
+msgid "Mot de passe"
+msgstr ""
+
+#: housesell/templates/login.html:57
+msgid "Se souvenir de moi"
+msgstr ""
+
+#: housesell/templates/login.html:63
+msgid "Mot de passe oublié ?"
+msgstr ""
+
+#: housesell/templates/login.html:80
+msgid "Pas encore de compte ?"
+msgstr ""
+
+#: housesell/templates/login.html:82
+msgid "Créer un compte"
+msgstr ""
+
+#: housesell/templates/login.html:94
+msgid "Ou continuer avec"
+msgstr ""
+
+#: housesell/templates/login.html:136
+msgid "Veuillez remplir tous les champs obligatoires."
+msgstr ""
+
+#: housesell/templates/login.html:142
+msgid "Connexion..."
+msgstr ""
+
+#: housesell/templates/payment_success.html:5
+msgid "Paiement réussi"
+msgstr ""
+
+#: housesell/templates/payment_success.html:17
+msgid "Paiement réussi !"
+msgstr ""
+
+#: housesell/templates/payment_success.html:19
+msgid "Votre transaction a été traitée avec succès."
+msgstr ""
+
+#: housesell/templates/payment_success.html:24
+msgid "Détails de la transaction"
+msgstr ""
+
+#: housesell/templates/payment_success.html:27
+msgid "ID Transaction"
+msgstr ""
+
+#: housesell/templates/payment_success.html:31
+msgid "Propriété"
+msgstr ""
+
+#: housesell/templates/payment_success.html:35
+msgid "Montant"
+msgstr ""
+
+#: housesell/templates/payment_success.html:49
+msgid "Date"
+msgstr ""
+
+#: housesell/templates/payment_success.html:57
+msgid "Prochaines étapes"
+msgstr ""
+
+#: housesell/templates/payment_success.html:61
+msgid "Un email de confirmation vous a été envoyé avec tous les détails."
+msgstr ""
+
+#: housesell/templates/payment_success.html:65
+msgid ""
+"Le propriétaire vous contactera dans les 24h pour finaliser la transaction."
+msgstr ""
+
+#: housesell/templates/payment_success.html:69
+msgid "Les documents de vente seront préparés et signés."
+msgstr ""
+
+#: housesell/templates/payment_success.html:78
+msgid "Voir d\\"
+msgstr ""
+
+#: housesell/templates/payment_success.html:82
+msgid "Retour à l\\"
+msgstr ""
+
+#: housesell/templates/payment_success.html:88
+msgid "Besoin d\\"
+msgstr ""
+
+#: housesell/templates/payment_success.html:91
+#: housesell/templates/profile.html:72 housesell/templates/signup.html:37
+msgid "Email"
+msgstr ""
+
+#: housesell/templates/payment_success.html:94
+#: housesell/templates/profile.html:81 housesell/templates/signup.html:70
+msgid "Téléphone"
+msgstr ""
+
+#: housesell/templates/payment_success.html:97
+msgid "Chat"
+msgstr ""
+
+#: housesell/templates/payment_success.html:119
+msgid "Redirection automatique dans"
+msgstr ""
+
+#: housesell/templates/payment_success.html:119
+msgid "secondes"
+msgstr ""
+
+#: housesell/templates/profile.html:5
+msgid "Profil"
+msgstr ""
+
+#: housesell/templates/profile.html:32
+msgid "Changer photo"
+msgstr ""
+
+#: housesell/templates/profile.html:42
+msgid "Informations personnelles"
+msgstr ""
+
+#: housesell/templates/profile.html:54 housesell/templates/signup.html:49
+msgid "Prénom"
+msgstr ""
+
+#: housesell/templates/profile.html:63 housesell/templates/signup.html:58
+msgid "Nom"
+msgstr ""
+
+#: housesell/templates/profile.html:89 housesell/templates/signup.html:81
+msgid "Date de naissance"
+msgstr ""
+
+#: housesell/templates/profile.html:97 housesell/templates/signup.html:92
+msgid "Profession"
+msgstr ""
+
+#: housesell/templates/profile.html:105 housesell/templates/signup.html:103
+msgid "Ville/Région"
+msgstr ""
+
+#: housesell/templates/profile.html:113
+msgid "Biographie"
+msgstr ""
+
+#: housesell/templates/profile.html:120
+msgid "Réseaux sociaux"
+msgstr ""
+
+#: housesell/templates/profile.html:124
+msgid "Site web"
+msgstr ""
+
+#: housesell/templates/profile.html:153
+msgid "Sauvegarder"
+msgstr ""
+
+#: housesell/templates/profile.html:164
+msgid "Statistiques"
+msgstr ""
+
+#: housesell/templates/profile.html:167
+msgid "Propriétés publiées"
+msgstr ""
+
+#: housesell/templates/profile.html:175
+msgid "Membre depuis"
+msgstr ""
+
+#: housesell/templates/profile.html:183
+msgid "Actions rapides"
+msgstr ""
+
+#: housesell/templates/profile.html:191
+msgid "Voir propriétés"
+msgstr ""
+
+#: housesell/templates/profile.html:206
+msgid "Mes propriétés"
+msgstr ""
+
+#: housesell/templates/profile.html:235
+msgid "Mes témoignages"
+msgstr ""
+
+#: housesell/templates/signup.html:12
+msgid "Créer votre compte"
+msgstr ""
+
+#: housesell/templates/signup.html:15
+msgid "Rejoignez SellHub et trouvez votre maison de rêve"
+msgstr ""
+
+#: housesell/templates/signup.html:134
+msgid "Confirmer le mot de passe"
+msgstr ""
+
+#: housesell/templates/signup.html:150
+msgid "termes et conditions"
+msgstr ""
+
+#: housesell/templates/signup.html:160
+msgid "Créer mon compte"
+msgstr ""
+
+#: housesell/templates/signup.html:166
+msgid "Déjà un compte ?"
+msgstr ""
+
+#: housesell/templates/testimonials.html:12
+msgid "Témoignages de nos clients"
+msgstr ""
+
+#: housesell/templates/testimonials.html:14
+msgid "Découvrez ce que nos clients disent de leur expérience avec SellHub"
+msgstr ""
+
+#: housesell/templates/testimonials.html:20
+msgid "Ajouter mon témoignage"
+msgstr ""
+
+#: housesell/templates/testimonials.html:34
+msgid "Note moyenne"
+msgstr ""
+
+#: housesell/templates/testimonials.html:38
+msgid "Clients satisfaits"
+msgstr ""
+
+#: housesell/templates/testimonials.html:46
+msgid "Trier par:"
+msgstr ""
+
+#: housesell/templates/testimonials.html:48
+msgid "Plus récents"
+msgstr ""
+
+#: housesell/templates/testimonials.html:49
+msgid "Plus anciens"
+msgstr ""
+
+#: housesell/templates/testimonials.html:50
+msgid "Note la plus haute"
+msgstr ""
+
+#: housesell/templates/testimonials.html:54
+msgid "Note:"
+msgstr ""
+
+#: housesell/templates/testimonials.html:101
+#: housesell/templates/testimonials.html:258
+msgid "Lire plus"
+msgstr ""
+
+#: housesell/templates/testimonials.html:121
+msgid "Aucun témoignage pour le moment"
+msgstr ""
+
+#: housesell/templates/testimonials.html:122
+msgid "Soyez le premier à partager votre expérience !"
+msgstr ""
+
+#: housesell/templates/testimonials.html:172
+msgid "Écrire un témoignage"
+msgstr ""
+
+#: housesell/templates/testimonials.html:255
+msgid "Lire moins"
+msgstr ""
+
+#: housesell/views.py:83
+msgid "Connexion réussie ! Bienvenue sur SellHub."
+msgstr ""
+
+#: housesell/views.py:98
+msgid "Compte créé avec succès ! Bienvenue sur SellHub."
+msgstr ""
+
+#: housesell/views.py:106
+msgid "Vous avez été déconnecté avec succès."
+msgstr ""
+
+#: housesell/views.py:122
+msgid "Profil mis à jour avec succès !"
+msgstr ""
+
+#: housesell/views.py:142
+msgid "Témoignage ajouté avec succès ! Il sera visible après approbation."
+msgstr ""
+
+#: housesell/views.py:175
+msgid "Méthode de paiement invalide."
+msgstr ""
+
+#: housesell/views.py:192
+msgid "Paiement initié avec succès !"
+msgstr ""

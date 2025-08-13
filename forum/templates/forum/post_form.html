@@ -1,6 +1,207 @@
-<h1>{% if form.instance.pk %}Edit Post{% else %}New Post{% endif %}</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="bg-pink-500 px-4 py-2 rounded text-white">Save</button>
-</form>
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        {% trans 'Modifier le sujet' %} - SellHub
+    {% else %}
+        {% trans 'Nouveau sujet' %} - SellHub
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-zinc-900 to-black py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- En-tête -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-white mb-4">
+                {% if form.instance.pk %}
+                    {% trans 'Modifier le sujet' %}
+                {% else %}
+                    {% trans 'Créer un nouveau sujet' %}
+                {% endif %}
+            </h1>
+            <p class="text-gray-400">
+                {% trans 'Partagez vos expériences, posez vos questions et contribuez à la communauté' %}
+            </p>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="bg-zinc-800 rounded-lg p-8">
+            <form method="post" id="post-form">
+                {% csrf_token %}
+                
+                <!-- Titre -->
+                <div class="mb-6">
+                    <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                        {% trans 'Titre du sujet' %} *
+                    </label>
+                    {{ form.title }}
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-xs text-gray-400">{% trans 'Un titre clair et descriptif' %}</span>
+                        <span class="text-xs text-gray-400" id="title-count">0 caractères</span>
+                    </div>
+                    {% if form.title.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.title.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Contenu -->
+                <div class="mb-6">
+                    <label for="{{ form.content.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                        {% trans 'Contenu' %} *
+                    </label>
+                    {{ form.content }}
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-xs text-gray-400">{% trans 'Minimum 20 caractères' %}</span>
+                        <span class="text-xs text-gray-400" id="content-count">0 caractères</span>
+                    </div>
+                    {% if form.content.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.content.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Conseils -->
+                <div class="bg-zinc-700 rounded-lg p-4 mb-6">
+                    <h3 class="text-sm font-medium text-white mb-3">{% trans 'Conseils pour un bon sujet' %}</h3>
+                    <div class="space-y-2 text-sm text-gray-300">
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <span>{% trans 'Soyez clair et précis dans votre titre' %}</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <span>{% trans 'Détaillez votre question ou expérience' %}</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <span>{% trans 'Respectez les autres membres de la communauté' %}</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <span>{% trans 'Utilisez des paragraphes pour une meilleure lisibilité' %}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Boutons -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button type="submit" id="submit-btn"
+                            class="flex-1 bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        {% if form.instance.pk %}
+                            {% trans 'Mettre à jour' %}
+                        {% else %}
+                            {% trans 'Publier le sujet' %}
+                        {% endif %}
+                    </button>
+                    <a href="{% url 'forum_home' %}" 
+                       class="flex-1 bg-gray-600 hover:bg-gray-500 text-white px-6 py-3 rounded-lg font-medium text-center transition-colors">
+                        {% trans 'Annuler' %}
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Aperçu en temps réel -->
+        <div class="mt-8 bg-zinc-800 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">{% trans 'Aperçu' %}</h3>
+            <div class="bg-zinc-700 rounded-lg p-4">
+                <h4 class="text-lg font-semibold text-white mb-2" id="preview-title">{% trans 'Titre du sujet' %}</h4>
+                <div class="text-gray-300 whitespace-pre-wrap" id="preview-content">{% trans 'Contenu du sujet...' %}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('post-form');
+    const titleInput = document.getElementById('{{ form.title.id_for_label }}');
+    const contentTextarea = document.getElementById('{{ form.content.id_for_label }}');
+    const titleCount = document.getElementById('title-count');
+    const contentCount = document.getElementById('content-count');
+    const previewTitle = document.getElementById('preview-title');
+    const previewContent = document.getElementById('preview-content');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // Compteur de caractères pour le titre
+    titleInput.addEventListener('input', function() {
+        const length = this.value.length;
+        titleCount.textContent = `${length} caractères`;
+        previewTitle.textContent = this.value || '{% trans "Titre du sujet" %}';
+        
+        // Validation en temps réel
+        if (length < 5) {
+            titleCount.classList.add('text-red-400');
+            titleCount.classList.remove('text-gray-400');
+        } else {
+            titleCount.classList.remove('text-red-400');
+            titleCount.classList.add('text-gray-400');
+        }
+    });
+
+    // Compteur de caractères pour le contenu
+    contentTextarea.addEventListener('input', function() {
+        const length = this.value.length;
+        contentCount.textContent = `${length} caractères`;
+        previewContent.textContent = this.value || '{% trans "Contenu du sujet..." %}';
+        
+        // Validation en temps réel
+        if (length < 20) {
+            contentCount.classList.add('text-red-400');
+            contentCount.classList.remove('text-gray-400');
+        } else {
+            contentCount.classList.remove('text-red-400');
+            contentCount.classList.add('text-gray-400');
+        }
+    });
+
+    // Validation du formulaire
+    form.addEventListener('submit', function(e) {
+        const title = titleInput.value.trim();
+        const content = contentTextarea.value.trim();
+
+        if (title.length < 5) {
+            e.preventDefault();
+            alert('{% trans "Le titre doit contenir au moins 5 caractères." %}');
+            titleInput.focus();
+            return;
+        }
+
+        if (content.length < 20) {
+            e.preventDefault();
+            alert('{% trans "Le contenu doit contenir au moins 20 caractères." %}');
+            contentTextarea.focus();
+            return;
+        }
+
+        // Désactiver le bouton pour éviter les soumissions multiples
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>{% trans "Publication..." %}';
+    });
+
+    // Initialiser l'aperçu
+    titleInput.dispatchEvent(new Event('input'));
+    contentTextarea.dispatchEvent(new Event('input'));
+});
+</script>
+
+<style>
+/* Styles pour les champs de formulaire */
+input[type="text"], textarea {
+    @apply w-full px-3 py-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+/* Animation pour l'aperçu */
+#preview-title, #preview-content {
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}

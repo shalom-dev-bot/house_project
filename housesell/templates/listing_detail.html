@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{{ listing.title }} - SellHub{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-zinc-900 to-black py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <ol class="flex items-center space-x-2 text-sm text-gray-400">
+                <li><a href="{% url 'index' %}" class="hover:text-primary">{% trans 'Accueil' %}</a></li>
+                <li><i class="fas fa-chevron-right text-xs"></i></li>
+                <li><a href="{% url 'listings' %}" class="hover:text-primary">{% trans 'Propriétés' %}</a></li>
+                <li><i class="fas fa-chevron-right text-xs"></i></li>
+                <li class="text-white">{{ listing.title }}</li>
+            </ol>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Image principale -->
+            <div class="lg:col-span-2">
+                <div class="bg-zinc-800 rounded-lg overflow-hidden">
+                    <img src="{{ listing.image.url }}" alt="{{ listing.title }}" 
+                         class="w-full h-96 object-cover">
+                </div>
+            </div>
+
+            <!-- Informations et actions -->
+            <div class="space-y-6">
+                <!-- Prix et actions -->
+                <div class="bg-zinc-800 rounded-lg p-6">
+                    <div class="text-3xl font-bold text-primary mb-4">{{ listing.price }} FCFA</div>
+                    
+                    <div class="space-y-3">
+                        <button onclick="openPaymentModal()" 
+                                class="w-full bg-primary hover:bg-primary-hover text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                            <i class="fas fa-credit-card mr-2"></i>{% trans 'Acheter maintenant' %}
+                        </button>
+                        
+                        <button onclick="contactOwner()" 
+                                class="w-full bg-gray-600 hover:bg-gray-500 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                            <i class="fas fa-envelope mr-2"></i>{% trans 'Contacter le propriétaire' %}
+                        </button>
+                        
+                        <button onclick="addToFavorites()" 
+                                class="w-full bg-gray-600 hover:bg-gray-500 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                            <i class="fas fa-heart mr-2"></i>{% trans 'Ajouter aux favoris' %}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Informations rapides -->
+                <div class="bg-zinc-800 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">{% trans 'Informations rapides' %}</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">{% trans 'Type' %}</span>
+                            <span class="text-white">{{ listing.get_property_type_display }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">{% trans 'Chambres' %}</span>
+                            <span class="text-white">{{ listing.bedrooms }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">{% trans 'Salles de bain' %}</span>
+                            <span class="text-white">{{ listing.bathrooms }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">{% trans 'Surface' %}</span>
+                            <span class="text-white">{{ listing.square_feet }} m²</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">{% trans 'Disponible' %}</span>
+                            <span class="text-green-400">{% if listing.is_available %}{% trans 'Oui' %}{% else %}{% trans 'Non' %}{% endif %}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Propriétaire -->
+                {% if listing.owner %}
+                <div class="bg-zinc-800 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">{% trans 'Propriétaire' %}</h3>
+                    <div class="flex items-center space-x-3">
+                        <img src="{{ listing.owner.profile.avatar.url|default:'/static/src/default-avatar.jpg' }}" 
+                             alt="{{ listing.owner.username }}" 
+                             class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <p class="text-white font-medium">{{ listing.owner.get_full_name|default:listing.owner.username }}</p>
+                            <p class="text-gray-400 text-sm">{{ listing.owner.profile.location|default:"Localisation non spécifiée" }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Détails de la propriété -->
+        <div class="mt-8">
+            <div class="bg-zinc-800 rounded-lg p-6">
+                <h2 class="text-2xl font-bold text-white mb-6">{{ listing.title }}</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Description -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-4">{% trans 'Description' %}</h3>
+                        <p class="text-gray-300 leading-relaxed">{{ listing.description }}</p>
+                    </div>
+
+                    <!-- Caractéristiques -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-4">{% trans 'Caractéristiques' %}</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-bed text-primary"></i>
+                                <span class="text-gray-300">{{ listing.bedrooms }} {% trans 'chambres' %}</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-bath text-primary"></i>
+                                <span class="text-gray-300">{{ listing.bathrooms }} {% trans 'salles de bain' %}</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-ruler-combined text-primary"></i>
+                                <span class="text-gray-300">{{ listing.square_feet }} m²</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-home text-primary"></i>
+                                <span class="text-gray-300">{{ listing.get_property_type_display }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Localisation -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-white mb-4">{% trans 'Localisation' %}</h3>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-map-marker-alt text-primary"></i>
+                        <span class="text-gray-300">{{ listing.address }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de paiement -->
+<div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-zinc-800 rounded-lg p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white">{% trans 'Paiement' %}</h3>
+                <button onclick="closePaymentModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form method="post" action="{% url 'initiate_payment' listing.id %}">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">
+                            {% trans 'Méthode de paiement' %}
+                        </label>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 p-3 border border-gray-600 rounded-lg hover:bg-gray-700 cursor-pointer transition-colors">
+                                <input type="radio" name="payment_method" value="om" class="text-primary" required>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center shadow-lg">
+                                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <span class="text-white font-medium">Orange Money</span>
+                                        <p class="text-xs text-gray-400">Paiement sécurisé</p>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 border border-gray-600 rounded-lg hover:bg-gray-700 cursor-pointer transition-colors">
+                                <input type="radio" name="payment_method" value="momo" class="text-primary" required>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center shadow-lg">
+                                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <span class="text-white font-medium">MTN Mobile Money</span>
+                                        <p class="text-xs text-gray-400">Paiement sécurisé</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300">{% trans 'Montant total' %}</span>
+                            <span class="text-2xl font-bold text-primary">{{ listing.price }} FCFA</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full bg-primary hover:bg-primary-hover text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                        <i class="fas fa-lock mr-2"></i>{% trans 'Payer maintenant' %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function openPaymentModal() {
+    document.getElementById('payment-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePaymentModal() {
+    document.getElementById('payment-modal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+function contactOwner() {
+    // Ici vous pouvez implémenter la logique de contact
+    alert('{% trans "Fonctionnalité de contact à implémenter" %}');
+}
+
+function addToFavorites() {
+    // Ici vous pouvez implémenter la logique des favoris
+    alert('{% trans "Ajouté aux favoris" %}');
+}
+
+// Fermer le modal en cliquant à l'extérieur
+document.getElementById('payment-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePaymentModal();
+    }
+});
+</script>
+
+<style>
+/* Styles pour les boutons radio personnalisés */
+input[type="radio"] {
+    @apply text-primary focus:ring-primary;
+}
+</style>
+{% endblock %}
+

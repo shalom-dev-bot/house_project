@@ -1,27 +1,322 @@
-<h1>{{ post.title }}</h1>
-<p>{{ post.content }}</p>
-<p>By {{ post.author.username }} at {{ post.created_at }}</p>
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
 
-{% if user == post.author %}
-  <a href="{% url 'post_edit' post.pk %}">Edit</a> | 
-  <a href="{% url 'post_delete' post.pk %}">Delete</a>
-{% endif %}
+{% block title %}{{ post.title }} - Forum SellHub{% endblock %}
 
-<h2>Comments</h2>
-<ul>
-  {% for comment in comments %}
-    <li><strong>{{ comment.author.username }}</strong>: {{ comment.content }} ({{ comment.created_at }})</li>
-  {% empty %}
-    <li>No comments yet.</li>
-  {% endfor %}
-</ul>
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-zinc-900 to-black py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <ol class="flex items-center space-x-2 text-sm text-gray-400">
+                <li><a href="{% url 'index' %}" class="hover:text-primary">{% trans 'Accueil' %}</a></li>
+                <li><i class="fas fa-chevron-right text-xs"></i></li>
+                <li><a href="{% url 'forum_home' %}" class="hover:text-primary">{% trans 'Forum' %}</a></li>
+                <li><i class="fas fa-chevron-right text-xs"></i></li>
+                <li class="text-white">{{ post.title|truncatechars:30 }}</li>
+            </ol>
+        </nav>
 
-{% if user.is_authenticated %}
-<form method="post">
-  {% csrf_token %}
-  {{ comment_form.as_p }}
-  <button type="submit" class="bg-pink-500 px-4 py-2 rounded text-white">Add Comment</button>
-</form>
-{% else %}
-<p><a href="{% url 'account_login' %}">Log in</a> to comment.</p>
-{% endif %}
+        <!-- Post principal -->
+        <div class="bg-zinc-800 rounded-lg p-8 mb-8">
+            <!-- En-tête du post -->
+            <div class="flex items-start justify-between mb-6">
+                <div class="flex items-center space-x-4">
+                    <img src="{{ post.author.profile.avatar.url|default:'/static/src/default-avatar.jpg' }}" 
+                         alt="{{ post.author.username }}" 
+                         class="w-12 h-12 rounded-full object-cover">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white mb-2">{{ post.title }}</h1>
+                        <div class="flex items-center space-x-4 text-sm text-gray-400">
+                            <span>{% trans 'Par' %} {{ post.author.get_full_name|default:post.author.username }}</span>
+                            <span>{{ post.created_at|date:"d/m/Y à H:i" }}</span>
+                            <span class="flex items-center">
+                                <i class="fas fa-comments mr-1"></i>
+                                {{ comments.count }} {% trans 'réponses' %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if user == post.author %}
+                <div class="flex items-center space-x-2">
+                    <a href="{% url 'post_edit' post.pk %}" 
+                       class="text-gray-400 hover:text-primary transition-colors p-2 rounded-lg hover:bg-gray-700">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button onclick="deletePost({{ post.pk }})" 
+                            class="text-gray-400 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-gray-700">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Contenu du post -->
+            <div class="prose prose-invert max-w-none">
+                <div class="text-gray-300 leading-relaxed whitespace-pre-wrap">{{ post.content }}</div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-between mt-6 pt-6 border-t border-gray-700">
+                <div class="flex items-center space-x-4">
+                    <button onclick="likePost({{ post.pk }})" class="flex items-center space-x-2 text-gray-400 hover:text-primary transition-colors">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span id="likes-count-{{ post.pk }}">0</span>
+                    </button>
+                    <button onclick="sharePost()" class="flex items-center space-x-2 text-gray-400 hover:text-primary transition-colors">
+                        <i class="fas fa-share"></i>
+                        <span>{% trans 'Partager' %}</span>
+                    </button>
+                </div>
+                
+                <div class="text-sm text-gray-400">
+                    <i class="fas fa-eye mr-1"></i>
+                    <span id="views-count-{{ post.pk }}">0</span> {% trans 'vues' %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Section commentaires -->
+        <div class="bg-zinc-800 rounded-lg p-8">
+            <h2 class="text-xl font-bold text-white mb-6">
+                {% trans 'Réponses' %} ({{ comments.count }})
+            </h2>
+
+            <!-- Formulaire de commentaire -->
+            {% if user.is_authenticated %}
+            <div class="mb-8">
+                <form method="post" id="comment-form">
+                    {% csrf_token %}
+                    <div class="flex items-start space-x-4">
+                        <img src="{{ user.profile.avatar.url|default:'/static/src/default-avatar.jpg' }}" 
+                             alt="{{ user.username }}" 
+                             class="w-10 h-10 rounded-full object-cover mt-2">
+                        <div class="flex-1">
+                            <label for="{{ comment_form.content.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                {% trans 'Votre réponse' %}
+                            </label>
+                            {{ comment_form.content }}
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs text-gray-400">{% trans 'Minimum 5 caractères' %}</span>
+                                <span class="text-xs text-gray-400" id="comment-count">0 caractères</span>
+                            </div>
+                            <button type="submit" id="submit-comment"
+                                    class="mt-3 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50">
+                                <i class="fas fa-paper-plane mr-2"></i>{% trans 'Répondre' %}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% else %}
+            <div class="bg-zinc-700 rounded-lg p-4 mb-8 text-center">
+                <p class="text-gray-300 mb-3">{% trans 'Connectez-vous pour répondre à ce sujet' %}</p>
+                <a href="{% url 'login' %}" 
+                   class="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-sign-in-alt mr-2"></i>{% trans 'Se connecter' %}
+                </a>
+            </div>
+            {% endif %}
+
+            <!-- Liste des commentaires -->
+            <div class="space-y-6">
+                {% for comment in comments %}
+                <div class="flex items-start space-x-4 p-4 bg-zinc-700 rounded-lg">
+                    <img src="{{ comment.author.profile.avatar.url|default:'/static/src/default-avatar.jpg' }}" 
+                         alt="{{ comment.author.username }}" 
+                         class="w-10 h-10 rounded-full object-cover">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-medium text-white">{{ comment.author.get_full_name|default:comment.author.username }}</span>
+                                <span class="text-xs text-gray-400">{{ comment.created_at|date:"d/m/Y H:i" }}</span>
+                                {% if comment.author == post.author %}
+                                <span class="bg-primary text-white text-xs px-2 py-1 rounded-full">{% trans 'Auteur' %}</span>
+                                {% endif %}
+                            </div>
+                            
+                            {% if user == comment.author %}
+                            <div class="flex items-center space-x-2">
+                                <button onclick="editComment({{ comment.pk }})" 
+                                        class="text-gray-400 hover:text-primary transition-colors">
+                                    <i class="fas fa-edit text-xs"></i>
+                                </button>
+                                <button onclick="deleteComment({{ comment.pk }})" 
+                                        class="text-gray-400 hover:text-red-400 transition-colors">
+                                    <i class="fas fa-trash text-xs"></i>
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="text-gray-300 whitespace-pre-wrap" id="comment-content-{{ comment.pk }}">
+                            {{ comment.content }}
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 mt-3 text-sm">
+                            <button onclick="likeComment({{ comment.pk }})" 
+                                    class="text-gray-400 hover:text-primary transition-colors">
+                                <i class="fas fa-thumbs-up mr-1"></i>
+                                <span id="comment-likes-{{ comment.pk }}">0</span>
+                            </button>
+                            <button onclick="replyToComment({{ comment.pk }})" 
+                                    class="text-gray-400 hover:text-primary transition-colors">
+                                <i class="fas fa-reply mr-1"></i>{% trans 'Répondre' %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-8">
+                    <i class="fas fa-comments text-4xl text-gray-600 mb-4"></i>
+                    <p class="text-gray-400">{% trans 'Aucune réponse pour le moment. Soyez le premier à répondre !' %}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const commentForm = document.getElementById('comment-form');
+    const commentTextarea = document.getElementById('{{ comment_form.content.id_for_label }}');
+    const commentCount = document.getElementById('comment-count');
+    const submitComment = document.getElementById('submit-comment');
+
+    if (commentTextarea) {
+        // Compteur de caractères pour les commentaires
+        commentTextarea.addEventListener('input', function() {
+            const length = this.value.length;
+            commentCount.textContent = `${length} caractères`;
+            
+            // Validation en temps réel
+            if (length < 5) {
+                commentCount.classList.add('text-red-400');
+                commentCount.classList.remove('text-gray-400');
+                submitComment.disabled = true;
+            } else {
+                commentCount.classList.remove('text-red-400');
+                commentCount.classList.add('text-gray-400');
+                submitComment.disabled = false;
+            }
+        });
+
+        // Validation du formulaire de commentaire
+        commentForm.addEventListener('submit', function(e) {
+            const content = commentTextarea.value.trim();
+
+            if (content.length < 5) {
+                e.preventDefault();
+                alert('{% trans "Votre réponse doit contenir au moins 5 caractères." %}');
+                commentTextarea.focus();
+                return;
+            }
+
+            // Désactiver le bouton
+            submitComment.disabled = true;
+            submitComment.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>{% trans "Envoi..." %}';
+        });
+    }
+
+    // Simuler les données (à remplacer par de vraies données)
+    const posts = document.querySelectorAll('[id^="likes-count-"], [id^="views-count-"], [id^="comment-likes-"]');
+    posts.forEach(element => {
+        const randomValue = Math.floor(Math.random() * 50) + 1;
+        element.textContent = randomValue;
+    });
+});
+
+// Fonctions pour les interactions
+function likePost(postId) {
+    // Implémenter la logique de like
+    const likesElement = document.getElementById(`likes-count-${postId}`);
+    const currentLikes = parseInt(likesElement.textContent);
+    likesElement.textContent = currentLikes + 1;
+}
+
+function sharePost() {
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ post.title }}',
+            text: '{{ post.content|truncatewords:20 }}',
+            url: window.location.href
+        });
+    } else {
+        // Fallback pour copier le lien
+        navigator.clipboard.writeText(window.location.href);
+        alert('{% trans "Lien copié dans le presse-papiers !" %}');
+    }
+}
+
+function deletePost(postId) {
+    if (confirm("{% trans 'Êtes-vous sûr de vouloir supprimer ce sujet ?' %}")) {
+        fetch("/forum/post/" + postId + "/delete/", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+            },
+        }).then(function(response) {
+            if (response.ok) {
+                window.location.href = "{% url 'forum_home' %}";
+            }
+        });
+    }
+}
+
+function likeComment(commentId) {
+    const likesElement = document.getElementById(`comment-likes-${commentId}`);
+    const currentLikes = parseInt(likesElement.textContent);
+    likesElement.textContent = currentLikes + 1;
+}
+
+function editComment(commentId) {
+    const contentElement = document.getElementById(`comment-content-${commentId}`);
+    const currentContent = contentElement.textContent.trim();
+    
+    const newContent = prompt('{% trans "Modifier votre réponse :" %}', currentContent);
+    if (newContent && newContent !== currentContent) {
+        // Implémenter la logique de modification
+        contentElement.textContent = newContent;
+    }
+}
+
+function deleteComment(commentId) {
+    if (confirm('{% trans "Êtes-vous sûr de vouloir supprimer cette réponse ?" %}')) {
+        // Implémenter la logique de suppression
+        const commentElement = document.querySelector(`[id="comment-content-${commentId}"]`).closest('.flex.items-start.space-x-4');
+        commentElement.remove();
+    }
+}
+
+function replyToComment(commentId) {
+    const commentTextarea = document.getElementById('{{ comment_form.content.id_for_label }}');
+    if (commentTextarea) {
+        commentTextarea.focus();
+        commentTextarea.value = `@commentaire_${commentId} `;
+    }
+}
+</script>
+
+<style>
+/* Styles pour les champs de formulaire */
+textarea {
+    @apply w-full px-3 py-3 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary resize-none;
+    min-height: 100px;
+}
+
+.prose {
+    @apply text-gray-300;
+}
+
+.prose p {
+    @apply mb-4;
+}
+
+.prose p:last-child {
+    @apply mb-0;
+}
+</style>
+{% endblock %}

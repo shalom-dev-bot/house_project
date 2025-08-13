@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans 'Profil' %} - SellHub{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-zinc-900 to-black py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- En-tête du profil -->
+        <div class="bg-zinc-800 rounded-lg p-6 mb-8">
+            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                <div class="relative">
+                    <img src="{{ user.profile.avatar.url|default:'/static/src/default-avatar.jpg' }}" 
+                         alt="{{ user.username }}" 
+                         class="w-24 h-24 rounded-full object-cover border-4 border-primary">
+                    <div class="absolute -bottom-2 -right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white"></div>
+                </div>
+                <div class="text-center md:text-left">
+                    <h1 class="text-2xl font-bold text-white">{{ user.get_full_name|default:user.username }}</h1>
+                    <p class="text-gray-400">{{ user.email }}</p>
+                    {% if user.profile.profession %}
+                        <p class="text-primary">{{ user.profile.profession }}</p>
+                    {% endif %}
+                    {% if user.profile.location %}
+                        <p class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i>{{ user.profile.location }}</p>
+                    {% endif %}
+                </div>
+                <div class="md:ml-auto">
+                    <button onclick="document.getElementById('avatar-input').click()" 
+                            class="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-camera mr-2"></i>{% trans 'Changer photo' %}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Formulaire de profil -->
+            <div class="lg:col-span-2">
+                <div class="bg-zinc-800 rounded-lg p-6">
+                    <h2 class="text-xl font-bold text-white mb-6">{% trans 'Informations personnelles' %}</h2>
+                    
+                    <form method="post" enctype="multipart/form-data" id="profile-form">
+                        {% csrf_token %}
+                        
+                        <!-- Avatar caché -->
+                        <input type="file" id="avatar-input" name="avatar" accept="image/*" class="hidden">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Prénom -->
+                            <div>
+                                <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                    {% trans 'Prénom' %}
+                                </label>
+                                <input type="text" name="first_name" value="{{ user.first_name }}" 
+                                       class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                            </div>
+
+                            <!-- Nom -->
+                            <div>
+                                <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                    {% trans 'Nom' %}
+                                </label>
+                                <input type="text" name="last_name" value="{{ user.last_name }}" 
+                                       class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary">
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    {% trans 'Email' %}
+                                </label>
+                                <input type="email" value="{{ user.email }}" disabled
+                                       class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-600 text-gray-400 cursor-not-allowed">
+                            </div>
+
+                            <!-- Téléphone -->
+                            <div>
+                                <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                    {% trans 'Téléphone' %}
+                                </label>
+                                {{ form.phone }}
+                            </div>
+
+                            <!-- Date de naissance -->
+                            <div>
+                                <label for="{{ form.date_of_birth.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                    {% trans 'Date de naissance' %}
+                                </label>
+                                {{ form.date_of_birth }}
+                            </div>
+
+                            <!-- Profession -->
+                            <div>
+                                <label for="{{ form.profession.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                    {% trans 'Profession' %}
+                                </label>
+                                {{ form.profession }}
+                            </div>
+
+                            <!-- Localisation -->
+                            <div class="md:col-span-2">
+                                <label for="{{ form.location.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                    {% trans 'Ville/Région' %}
+                                </label>
+                                {{ form.location }}
+                            </div>
+
+                            <!-- Bio -->
+                            <div class="md:col-span-2">
+                                <label for="{{ form.bio.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                    {% trans 'Biographie' %}
+                                </label>
+                                {{ form.bio }}
+                            </div>
+
+                            <!-- Réseaux sociaux -->
+                            <div class="md:col-span-2">
+                                <h3 class="text-lg font-medium text-white mb-4">{% trans 'Réseaux sociaux' %}</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="{{ form.website.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                            {% trans 'Site web' %}
+                                        </label>
+                                        {{ form.website }}
+                                    </div>
+                                    <div>
+                                        <label for="{{ form.facebook.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                            Facebook
+                                        </label>
+                                        {{ form.facebook }}
+                                    </div>
+                                    <div>
+                                        <label for="{{ form.twitter.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                            Twitter
+                                        </label>
+                                        {{ form.twitter }}
+                                    </div>
+                                    <div>
+                                        <label for="{{ form.linkedin.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">
+                                            LinkedIn
+                                        </label>
+                                        {{ form.linkedin }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" 
+                                    class="bg-primary hover:bg-primary-hover text-white px-6 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-save mr-2"></i>{% trans 'Sauvegarder' %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Statistiques -->
+                <div class="bg-zinc-800 rounded-lg p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">{% trans 'Statistiques' %}</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">{% trans 'Propriétés publiées' %}</span>
+                            <span class="text-primary font-bold">{{ user_listings.count }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">{% trans 'Témoignages' %}</span>
+                            <span class="text-primary font-bold">{{ user_testimonials.count }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">{% trans 'Membre depuis' %}</span>
+                            <span class="text-primary font-bold">{{ user.date_joined|date:"M Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions rapides -->
+                <div class="bg-zinc-800 rounded-lg p-6">
+                    <h3 class="text-lg font-bold text-white mb-4">{% trans 'Actions rapides' %}</h3>
+                    <div class="space-y-3">
+                        <a href="{% url 'add_testimonial' %}" 
+                           class="block w-full bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-center transition-colors">
+                            <i class="fas fa-star mr-2"></i>{% trans 'Ajouter témoignage' %}
+                        </a>
+                        <a href="{% url 'listings' %}" 
+                           class="block w-full bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-center transition-colors">
+                            <i class="fas fa-home mr-2"></i>{% trans 'Voir propriétés' %}
+                        </a>
+                        <a href="{% url 'forum_home' %}" 
+                           class="block w-full bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-center transition-colors">
+                            <i class="fas fa-comments mr-2"></i>{% trans 'Forum' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mes propriétés -->
+        {% if user_listings %}
+        <div class="mt-8">
+            <div class="bg-zinc-800 rounded-lg p-6">
+                <h2 class="text-xl font-bold text-white mb-6">{% trans 'Mes propriétés' %}</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for listing in user_listings %}
+                    <div class="bg-zinc-700 rounded-lg overflow-hidden">
+                        <img src="{{ listing.image.url }}" alt="{{ listing.title }}" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-white mb-2">{{ listing.title }}</h3>
+                            <p class="text-gray-400 text-sm mb-2">{{ listing.address }}</p>
+                            <p class="text-primary font-bold">{{ listing.price }} FCFA</p>
+                            <div class="flex justify-between items-center mt-3">
+                                <span class="text-xs text-gray-400">
+                                    <i class="fas fa-bed mr-1"></i>{{ listing.bedrooms }}
+                                    <i class="fas fa-bath ml-3 mr-1"></i>{{ listing.bathrooms }}
+                                </span>
+                                <span class="text-xs text-gray-400">{{ listing.created_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Mes témoignages -->
+        {% if user_testimonials %}
+        <div class="mt-8">
+            <div class="bg-zinc-800 rounded-lg p-6">
+                <h2 class="text-xl font-bold text-white mb-6">{% trans 'Mes témoignages' %}</h2>
+                <div class="space-y-4">
+                    {% for testimonial in user_testimonials %}
+                    <div class="bg-zinc-700 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="flex text-yellow-400">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= testimonial.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <span class="text-sm text-gray-400">{{ testimonial.created_at|date:"M d, Y" }}</span>
+                            </div>
+                            {% if testimonial.is_approved %}
+                                <span class="text-green-400 text-sm"><i class="fas fa-check-circle"></i> Approuvé</span>
+                            {% else %}
+                                <span class="text-yellow-400 text-sm"><i class="fas fa-clock"></i> En attente</span>
+                            {% endif %}
+                        </div>
+                        <p class="text-gray-300">{{ testimonial.content }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Prévisualisation de l'avatar
+    const avatarInput = document.getElementById('avatar-input');
+    const avatarImg = document.querySelector('.rounded-full');
+    
+    avatarInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                avatarImg.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Auto-sauvegarde du formulaire
+    const form = document.getElementById('profile-form');
+    const inputs = form.querySelectorAll('input, textarea');
+    
+    inputs.forEach(input => {
+        input.addEventListener('change', function() {
+            // Optionnel: auto-sauvegarde après 2 secondes d'inactivité
+            clearTimeout(window.autoSaveTimeout);
+            window.autoSaveTimeout = setTimeout(() => {
+                form.submit();
+            }, 2000);
+        });
+    });
+});
+</script>
+
+<style>
+/* Styles pour les champs de formulaire */
+input[type="text"], input[type="email"], input[type="url"], input[type="date"], textarea {
+    @apply w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+textarea {
+    @apply resize-none;
+    min-height: 100px;
+}
+</style>
+{% endblock %}
+
